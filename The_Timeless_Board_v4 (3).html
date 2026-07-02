@@ -1,0 +1,1758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Timeless Board — Chess, Bao & Ajua</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+
+/* ═══════════════════════════════════════════
+   TOKENS
+═══════════════════════════════════════════ */
+:root{
+  --brand:       #866144;
+  --brand-dark:  #5a3e2b;
+  --brand-deep:  #2e1e10;
+  --brand-mid:   #a07858;
+  --brand-pale:  #c4a882;
+  --brand-cream: #f5ece0;
+  --brand-warm:  #fdf9f4;
+  --gold:        #c9954a;
+  --gold-light:  #e8bc72;
+  --gold-pale:   #f7dfa8;
+  --ivory:       #f6f0e0;
+  --ivory-dark:  #e8dfc8;
+  --text-body:   #2b1a0f;
+  --text-muted:  #6b4a2a;
+  --border:      rgba(134,97,68,.18);
+  --border-gold: rgba(201,149,74,.32);
+  --page-w:      680px;   /* the single reading column */
+}
+
+/* ═══════════════════════════════════════════
+   RESET + BASE
+═══════════════════════════════════════════ */
+*{margin:0;padding:0;box-sizing:border-box;}
+
+html{scroll-behavior:smooth;}
+
+body{
+  background:#e8ddd0;          /* warm outer "paper" surround */
+  color:var(--text-body);
+  font-family:'Crimson Pro',Georgia,serif;
+  font-size:18.5px;
+  line-height:1.9;
+}
+
+/* ═══════════════════════════════════════════
+   PAGE SHELL — narrow portrait column
+═══════════════════════════════════════════ */
+.page{
+  max-width:var(--page-w);
+  margin:0 auto;
+  background:var(--brand-warm);
+  box-shadow:0 4px 40px rgba(0,0,0,.22);
+  position:relative;
+}
+
+/* ═══════════════════════════════════════════
+   RUNNING HEADER — appears on every content page
+═══════════════════════════════════════════ */
+.running-head{
+  padding:14px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--border);
+}
+.running-head .rh-title{
+  font-family:'Space Mono',monospace;font-size:9px;
+  letter-spacing:.28em;text-transform:uppercase;
+  color:var(--text-muted);opacity:.65;
+}
+.running-head .rh-rule{
+  flex:1;height:1px;margin:0 20px;
+  background:linear-gradient(90deg,transparent,var(--border-gold),transparent);
+}
+.running-head .rh-part{
+  font-family:'Space Mono',monospace;font-size:9px;
+  letter-spacing:.22em;text-transform:uppercase;
+  color:var(--gold);opacity:.75;
+}
+
+/* ═══════════════════════════════════════════
+   FULL-BLEED SECTION WRAPPERS
+═══════════════════════════════════════════ */
+/* These sit inside .page so they fill the column naturally */
+
+/* ─── COVER ─── */
+.cover{
+  min-height:100vh;
+  background:var(--brand-deep);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:80px 52px 64px;
+  position:relative;overflow:hidden;
+  text-align:center;
+}
+.cover::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(201,149,74,.13) 0%,transparent 55%),
+    radial-gradient(ellipse at 70% 80%, rgba(134,97,68,.2) 0%,transparent 55%),
+    repeating-linear-gradient(45deg,transparent,transparent 50px,rgba(201,149,74,.022) 50px,rgba(201,149,74,.022) 51px);
+  pointer-events:none;
+}
+.cover-pattern{
+  position:absolute;inset:0;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23c9954a' fill-rule='evenodd'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E");
+  pointer-events:none;
+}
+.cover-inner{position:relative;width:100%;}
+.cover-kicker{
+  font-family:'Space Mono',monospace;font-size:9.5px;
+  letter-spacing:.32em;color:var(--gold-light);
+  text-transform:uppercase;margin-bottom:28px;opacity:.8;
+}
+.cover-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(56px,12vw,84px);font-weight:700;
+  color:var(--ivory);line-height:1.04;margin-bottom:16px;
+}
+.cover-title em{font-style:italic;color:var(--gold-light);}
+.cover-subtitle{
+  font-family:'Crimson Pro',serif;font-size:19px;
+  font-weight:300;font-style:italic;
+  color:var(--brand-pale);margin-bottom:40px;line-height:1.6;
+}
+.cover-line{
+  width:160px;height:1px;margin:0 auto 36px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+.cover-map{margin:0 auto 10px;}
+.cover-map-caption{
+  font-family:'Space Mono',monospace;font-size:8.5px;
+  letter-spacing:.28em;color:var(--gold);
+  text-transform:uppercase;opacity:.55;margin-top:6px;
+}
+.cover-board-wrap{
+  width:160px;height:160px;margin:18px auto;
+  display:grid;grid-template-columns:repeat(8,1fr);
+  opacity:.28;
+  mask-image:radial-gradient(ellipse at center,black 15%,transparent 70%);
+  -webkit-mask-image:radial-gradient(ellipse at center,black 15%,transparent 70%);
+}
+.cbc-dk{background:var(--brand);}
+.cbc-lt{background:rgba(196,168,130,.25);}
+.cover-meta{
+  font-family:'Space Mono',monospace;font-size:9px;
+  letter-spacing:.16em;color:var(--brand-pale);
+  opacity:.5;text-transform:uppercase;line-height:2.5;
+  margin-top:24px;
+}
+
+/* ─── DEDICATION ─── */
+.dedication{
+  min-height:60vh;
+  background:var(--brand-deep);
+  display:flex;align-items:center;justify-content:center;
+  padding:80px 52px;
+  text-align:center;
+  border-top:1px solid rgba(201,149,74,.2);
+}
+.dedication-inner p.ded-label{
+  font-family:'Space Mono',monospace;font-size:9px;
+  letter-spacing:.32em;color:var(--gold);
+  text-transform:uppercase;margin-bottom:36px;opacity:.65;
+}
+.dedication-inner p.ded-for{
+  font-family:'Playfair Display',serif;font-size:13px;
+  font-style:italic;color:var(--brand-pale);
+  letter-spacing:.1em;margin-bottom:18px;opacity:.7;
+}
+.dedication-inner h2{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(34px,6vw,52px);font-weight:700;
+  font-style:italic;color:var(--ivory);line-height:1.15;
+  margin-bottom:32px;
+}
+.dedication-inner .ded-line{
+  width:100px;height:1px;margin:0 auto 32px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+.dedication-inner p.ded-body{
+  font-family:'Crimson Pro',serif;font-size:17.5px;
+  font-style:italic;color:var(--brand-pale);
+  line-height:1.85;max-width:420px;margin:0 auto 16px;
+}
+.dedication-inner p.ded-sig{
+  font-family:'Space Mono',monospace;font-size:9px;
+  letter-spacing:.2em;color:var(--gold-light);
+  text-transform:uppercase;margin-top:36px;opacity:.55;
+  line-height:2.4;
+}
+
+/* ─── TABLE OF CONTENTS ─── */
+.toc-page{
+  background:var(--brand-deep);
+  padding:72px 52px 80px;
+}
+.toc-kicker{
+  font-family:'Space Mono',monospace;font-size:9px;
+  letter-spacing:.32em;color:var(--gold-light);
+  text-transform:uppercase;margin-bottom:48px;opacity:.7;
+}
+.toc-part{margin-bottom:40px;}
+.toc-part-title{
+  font-family:'Playfair Display',serif;font-size:20px;
+  font-weight:700;color:var(--ivory);
+  margin-bottom:14px;padding-bottom:10px;
+  border-bottom:1px solid rgba(201,149,74,.22);
+}
+.toc-entry{
+  display:flex;align-items:baseline;
+  padding:5px 0;
+  border-bottom:.5px solid rgba(201,149,74,.08);
+}
+.toc-entry-title{
+  font-family:'Crimson Pro',serif;font-size:16px;
+  color:var(--brand-pale);flex:1;
+}
+.toc-entry-dots{
+  flex:1;border-bottom:1px dotted rgba(201,149,74,.2);
+  margin:0 10px;position:relative;top:-3px;
+}
+.toc-entry-num{
+  font-family:'Space Mono',monospace;font-size:9px;
+  color:var(--gold);letter-spacing:.06em;opacity:.6;
+  white-space:nowrap;
+}
+
+/* ─── CULTURE PANEL ─── */
+.culture{
+  background:var(--brand);
+  padding:72px 52px;
+}
+.culture h2{
+  font-family:'Playfair Display',serif;font-size:32px;
+  font-style:italic;color:var(--ivory);margin-bottom:24px;font-weight:400;
+}
+.culture p{
+  font-family:'Crimson Pro',serif;font-size:17px;
+  color:var(--brand-cream);line-height:1.9;margin-bottom:16px;opacity:.92;
+}
+.culture-facts{display:flex;flex-direction:column;gap:12px;margin-top:32px;}
+.culture-fact{
+  background:rgba(0,0,0,.2);padding:18px 20px;
+  border-left:3px solid var(--gold-light);
+}
+.culture-fact h4{
+  font-family:'Playfair Display',serif;font-size:14px;
+  color:var(--gold-light);margin-bottom:6px;
+}
+.culture-fact p{
+  font-size:13.5px;color:var(--brand-pale);
+  line-height:1.65;margin:0;opacity:.88;
+}
+.iteso-proverb{
+  background:rgba(0,0,0,.22);border-left:4px solid var(--gold-light);
+  padding:22px 28px;margin-top:36px;
+}
+.iteso-proverb .ateso{
+  font-family:'Playfair Display',serif;font-style:italic;
+  font-size:20px;color:var(--gold-light);margin-bottom:10px;display:block;
+}
+.iteso-proverb .translation{font-size:14.5px;color:var(--brand-pale);}
+
+/* ─── PART DIVIDER ─── */
+.part-divider{
+  padding:90px 52px 72px;
+  position:relative;overflow:hidden;
+  text-align:left;
+}
+.part-divider.chess{background:#111e12;}
+.part-divider.bao{background:#111220;}
+.part-divider.ajua{background:#1e1110;}
+.part-divider.life{background:#0f1a10;}
+.part-divider::before{
+  content:'';position:absolute;inset:0;
+  background:repeating-linear-gradient(-45deg,transparent,transparent 32px,rgba(255,255,255,.01) 32px,rgba(255,255,255,.01) 33px);
+  pointer-events:none;
+}
+.part-divider::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,transparent,var(--gold),var(--gold-light),var(--gold),transparent);
+}
+.part-num-label{
+  font-family:'Space Mono',monospace;font-size:9.5px;
+  letter-spacing:.38em;color:var(--gold-light);
+  text-transform:uppercase;margin-bottom:20px;position:relative;opacity:.8;
+}
+.part-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(52px,10vw,76px);font-weight:700;
+  color:var(--ivory);line-height:1.06;position:relative;margin-bottom:14px;
+}
+.part-subtitle{
+  font-family:'Crimson Pro',serif;font-size:18px;
+  font-style:italic;font-weight:300;
+  color:var(--brand-pale);position:relative;
+}
+.part-ornament{
+  position:absolute;right:40px;bottom:36px;
+  font-size:160px;font-weight:700;
+  opacity:.04;color:var(--gold);line-height:1;
+  font-family:'Playfair Display',serif;
+  pointer-events:none;
+}
+
+/* ─── CHAPTER ─── */
+.chapter{
+  padding:60px 52px 64px;
+  border-bottom:1px solid var(--border);
+  position:relative;
+}
+.chapter:last-child{border-bottom:none;}
+
+/* subtle chess watermark in corner */
+.chapter::after{
+  content:'';position:absolute;
+  top:16px;right:16px;width:110px;height:110px;
+  background-image:repeating-conic-gradient(
+    rgba(134,97,68,.08) 0% 25%,
+    rgba(134,97,68,.03) 25% 50%
+  );
+  background-size:28px 28px;
+  mask-image:radial-gradient(ellipse at 80% 20%,rgba(0,0,0,.45) 5%,transparent 65%);
+  -webkit-mask-image:radial-gradient(ellipse at 80% 20%,rgba(0,0,0,.45) 5%,transparent 65%);
+  pointer-events:none;
+}
+
+.chapter-label{
+  margin-bottom:24px;
+  display:flex;align-items:baseline;gap:0;line-height:1;
+}
+.ch-big{
+  font-family:'Playfair Display',serif;
+  font-size:56px;font-weight:700;color:var(--gold);line-height:1;
+}
+.ch-rest{
+  font-family:'Crimson Pro',serif;
+  font-size:13px;font-weight:300;letter-spacing:.32em;
+  text-transform:uppercase;color:var(--text-muted);
+  margin-left:1px;position:relative;top:-6px;
+}
+.ch-num{
+  font-family:'Space Mono',monospace;font-size:10px;
+  letter-spacing:.2em;color:var(--gold);
+  margin-left:12px;position:relative;top:-6px;opacity:.75;
+}
+
+.chapter h2{
+  font-family:'Playfair Display',serif;
+  font-size:27px;font-weight:600;
+  color:var(--brand-deep);line-height:1.3;margin-bottom:10px;
+}
+.chapter .ch-date{
+  font-family:'Crimson Pro',serif;font-size:15px;
+  font-style:italic;color:var(--brand-mid);
+  display:block;margin-bottom:28px;
+}
+.chapter h3{
+  font-family:'Playfair Display',serif;font-size:20px;font-weight:600;
+  color:var(--brand);margin:36px 0 14px;
+  padding-left:14px;border-left:3px solid var(--gold-pale);
+}
+.chapter p{margin-bottom:18px;color:var(--text-body);font-size:18px;line-height:1.88;}
+
+/* drop cap on first paragraph */
+.chapter > p:first-of-type::first-letter,
+.dropcap::first-letter{
+  font-family:'Playfair Display',serif;
+  font-size:66px;font-weight:700;
+  float:left;line-height:.8;
+  margin:8px 9px 0 0;
+  color:var(--gold);
+}
+.no-dropcap::first-letter{all:unset;}
+
+/* ─── GOLD RULE ─── */
+.gold-rule{
+  height:3px;
+  background:linear-gradient(90deg,transparent,var(--gold),var(--gold-light),var(--gold),transparent);
+}
+
+/* ─── CALLOUT ─── */
+.callout{
+  background:linear-gradient(135deg,var(--brand-cream),var(--gold-pale));
+  border:1px solid var(--brand-pale);
+  padding:28px 32px;margin:34px 0;position:relative;
+}
+.callout::before{
+  content:'◆';position:absolute;top:-12px;left:32px;
+  background:var(--gold);color:white;
+  font-size:8px;width:24px;height:24px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:50%;
+}
+.callout-label{
+  font-family:'Space Mono',monospace;font-size:9px;
+  letter-spacing:.28em;color:var(--brand);
+  text-transform:uppercase;margin-bottom:10px;opacity:.7;
+}
+.callout h4{
+  font-family:'Playfair Display',serif;font-size:18px;
+  font-style:italic;color:var(--brand-dark);margin-bottom:10px;
+}
+.callout p{font-size:15.5px;color:var(--brand-deep);line-height:1.72;margin:0;}
+
+/* ─── TIMELINE ─── */
+.timeline{
+  position:relative;padding:6px 0 6px 32px;margin:34px 0;
+}
+.timeline::before{
+  content:'';position:absolute;left:8px;top:0;bottom:0;
+  width:1.5px;
+  background:linear-gradient(180deg,var(--gold),var(--brand-pale),var(--gold));
+  opacity:.4;
+}
+.tl-item{position:relative;margin-bottom:26px;padding-left:16px;}
+.tl-item::before{
+  content:'';position:absolute;left:-26px;top:7px;
+  width:8px;height:8px;border-radius:50%;
+  background:var(--gold);border:2px solid var(--brand-warm);
+  box-shadow:0 0 0 2px var(--gold);
+}
+.tl-year{
+  font-family:'Space Mono',monospace;font-size:9.5px;
+  color:var(--gold);letter-spacing:.1em;margin-bottom:3px;
+}
+.tl-text{font-size:16px;color:var(--text-body);line-height:1.65;}
+
+/* ─── PIECES TABLE ─── */
+.ptable{
+  width:100%;border-collapse:collapse;margin:28px 0;font-size:15.5px;
+}
+.ptable th{
+  background:var(--brand-dark);color:var(--ivory);
+  font-family:'Playfair Display',serif;
+  font-weight:600;font-size:13px;letter-spacing:.04em;
+  padding:11px 16px;text-align:left;
+}
+.ptable td{
+  padding:12px 16px;
+  border-bottom:.5px solid var(--border);
+  vertical-align:middle;
+}
+.ptable tr:nth-child(even) td{background:var(--brand-cream);}
+.pcell{display:flex;align-items:center;gap:10px;}
+.psym{font-size:24px;line-height:1;flex-shrink:0;}
+.pname{
+  font-family:'Playfair Display',serif;
+  font-weight:600;color:var(--brand);font-size:14px;
+}
+
+/* ─── HOW TO PLAY ─── */
+.how-to{
+  background:var(--brand-cream);
+  border:1px solid var(--brand-pale);
+  padding:36px 38px;margin:34px 0;
+}
+.how-to h3{
+  font-family:'Playfair Display',serif;font-size:22px;
+  color:var(--brand-deep);margin-bottom:22px;
+  border:none;padding:0;
+}
+.steps{counter-reset:step;}
+.step{display:flex;gap:16px;margin-bottom:18px;align-items:flex-start;}
+.step-n{
+  counter-increment:step;min-width:32px;height:32px;
+  background:var(--brand);color:var(--ivory);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Space Mono',monospace;font-size:11px;flex-shrink:0;margin-top:4px;
+}
+.step-n::before{content:counter(step);}
+.step-text{font-size:16px;line-height:1.68;}
+
+/* ─── STRATEGY SECTION LABEL ─── */
+.s-label{
+  display:flex;align-items:baseline;gap:0;
+  margin:44px 0 22px;line-height:1;
+}
+.s-label .sl-big{
+  font-family:'Playfair Display',serif;
+  font-size:52px;font-weight:700;color:var(--gold);line-height:1;
+}
+.s-label .sl-rest{
+  font-family:'Crimson Pro',serif;font-size:13px;
+  font-weight:300;letter-spacing:.32em;text-transform:uppercase;
+  color:var(--text-muted);margin-left:1px;
+  position:relative;top:-4px;
+}
+
+/* ─── STRATEGY CARDS (single column for portrait) ─── */
+.s-cards{display:flex;flex-direction:column;gap:14px;margin:18px 0;}
+.s-card{
+  background:white;
+  border:.5px solid var(--border);
+  border-top:2.5px solid var(--gold);
+  padding:20px 22px;
+}
+.s-card h4{
+  font-family:'Playfair Display',serif;
+  font-size:15.5px;color:var(--brand-deep);margin-bottom:7px;
+}
+.s-card p{font-size:14.5px;color:var(--text-muted);line-height:1.62;margin:0;}
+
+/* ─── MASTERS GRID ─── */
+.masters{display:flex;flex-direction:column;gap:12px;margin:22px 0;}
+.master-card{
+  border:.5px solid var(--border);
+  padding:16px 18px;background:var(--brand-warm);
+  display:flex;gap:16px;align-items:flex-start;
+}
+.master-card .era{
+  font-family:'Space Mono',monospace;font-size:8.5px;
+  letter-spacing:.18em;color:var(--gold);text-transform:uppercase;
+  margin-bottom:3px;
+}
+.master-card .mname{
+  font-family:'Playfair Display',serif;font-size:16px;
+  font-weight:600;color:var(--brand-deep);margin-bottom:5px;
+}
+.master-card .mdesc{font-size:13.5px;color:var(--text-muted);line-height:1.55;}
+.master-card-icon{
+  font-size:28px;flex-shrink:0;opacity:.55;margin-top:2px;
+}
+
+/* ─── GAME BOARDS ─── */
+.board-wrap{
+  margin:36px auto;
+  max-width:420px;
+}
+.board-caption{
+  font-family:'Space Mono',monospace;font-size:9px;
+  letter-spacing:.26em;color:var(--gold);
+  text-transform:uppercase;text-align:center;
+  margin-bottom:12px;opacity:.7;
+}
+.chess-board{
+  display:grid;grid-template-columns:repeat(8,1fr);
+  border:3px solid var(--brand-dark);
+  box-shadow:0 4px 20px rgba(46,30,16,.25);
+  aspect-ratio:1;
+  width:100%;
+}
+.cb-cell{
+  aspect-ratio:1;
+  display:flex;align-items:center;justify-content:center;
+  font-size:clamp(14px,3.2vw,26px);
+}
+.cb-cell.dk{background:var(--brand);}
+.cb-cell.lt{background:var(--ivory-dark);}
+.cb-cell .po{line-height:1;}
+
+/* Bao board: 4 rows × 8 cols */
+.bao-board{
+  display:grid;
+  grid-template-rows:repeat(4,1fr);
+  grid-template-columns:repeat(8,1fr);
+  border:3px solid var(--brand-dark);
+  box-shadow:0 4px 20px rgba(46,30,16,.25);
+  border-radius:4px;overflow:hidden;
+  width:100%;aspect-ratio:8/4;
+  background:var(--brand-dark);
+}
+.bao-cell{
+  display:flex;align-items:center;justify-content:center;
+  aspect-ratio:1;position:relative;
+}
+.bao-cell.bao-pit{
+  background:var(--brand-deep);
+  border:1.5px solid rgba(201,149,74,.2);
+  border-radius:50%;
+  margin:4px;
+}
+.bao-cell.bao-pit .seed-count{
+  font-family:'Space Mono',monospace;
+  font-size:10px;color:var(--gold-light);opacity:.7;
+}
+.bao-row-label{
+  font-family:'Space Mono',monospace;font-size:8px;
+  color:var(--gold);opacity:.5;letter-spacing:.1em;
+  text-align:center;
+}
+
+/* Ajua board: 2 rows × 8 cols */
+.ajua-board{
+  display:grid;
+  grid-template-rows:repeat(2,1fr);
+  grid-template-columns:repeat(8,1fr);
+  border:3px solid var(--brand-dark);
+  box-shadow:0 4px 20px rgba(46,30,16,.25);
+  border-radius:4px;overflow:hidden;
+  width:100%;aspect-ratio:8/2;
+  background:var(--brand-dark);
+  gap:3px;padding:6px;
+}
+.ajua-pit{
+  background:var(--brand-deep);
+  border:1.5px solid rgba(201,149,74,.2);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Space Mono',monospace;
+  font-size:9px;color:var(--gold-light);opacity:.75;
+  aspect-ratio:1;
+}
+
+/* ─── GAME OF LIFE ─── */
+.life-intro-section{
+  background:var(--brand-deep);
+  padding:60px 52px 48px;
+  text-align:center;
+}
+.life-intro-section p{
+  font-family:'Crimson Pro',serif;font-size:18px;
+  color:var(--brand-cream);line-height:1.9;margin-bottom:18px;
+}
+.life-intro-section blockquote{
+  font-family:'Playfair Display',serif;
+  font-size:22px;font-style:italic;
+  color:var(--gold-light);line-height:1.6;
+  margin:36px 0;padding:0 24px;
+}
+.life-gold-line{
+  width:120px;height:1px;margin:28px auto;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+
+/* life chapters sit on dark bg */
+.life-chapter{
+  background:var(--brand-deep);
+  padding:60px 52px;
+  border-bottom:1px solid rgba(201,149,74,.12);
+}
+.life-chapter h2{
+  font-family:'Playfair Display',serif;font-size:26px;
+  font-weight:600;color:var(--ivory);margin-bottom:22px;
+}
+.life-chapter h3{
+  font-family:'Playfair Display',serif;font-size:19px;
+  color:var(--gold-light);margin:32px 0 12px;
+  padding-left:14px;border-left:3px solid rgba(201,149,74,.4);
+}
+.life-chapter p{
+  font-family:'Crimson Pro',serif;
+  font-size:17.5px;color:var(--brand-cream);line-height:1.88;
+  margin-bottom:16px;
+}
+.life-chapter .chapter-label .ch-big{color:var(--gold-light);}
+.life-chapter .chapter-label .ch-rest{color:rgba(196,168,130,.55);}
+.life-chapter .chapter-label .ch-num{color:var(--gold-light);}
+
+/* side header in life section */
+.side-head{
+  display:flex;align-items:center;gap:16px;
+  margin:44px 0 24px;padding-bottom:14px;
+  border-bottom:1px solid var(--border-gold);
+}
+.side-badge{
+  width:44px;height:44px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;border:2px solid var(--gold);
+}
+.side-badge.blk{background:var(--brand-deep);color:var(--ivory);}
+.side-badge.wht{background:var(--ivory);color:var(--brand-deep);}
+.side-head-text h2{
+  font-family:'Playfair Display',serif;font-size:24px;
+  color:var(--ivory);font-weight:600;margin:0 0 3px;
+}
+.side-head-text p{font-size:14px;color:var(--brand-pale);font-style:italic;margin:0;}
+
+/* piece cards — single column */
+.piece-cards{display:flex;flex-direction:column;gap:12px;margin-bottom:16px;}
+.piece-card{
+  background:#1a2e1c;
+  border:.5px solid rgba(201,149,74,.22);
+  padding:18px 20px;
+  display:flex;gap:14px;align-items:flex-start;
+}
+.piece-card.hl{
+  background:#1f3520;
+  border-color:rgba(201,149,74,.48);border-width:1px;
+}
+.pc-icon{font-size:32px;flex-shrink:0;line-height:1;margin-top:2px;}
+.pc-role{
+  font-family:'Space Mono',monospace;font-size:8.5px;
+  letter-spacing:.22em;color:var(--gold-light);
+  text-transform:uppercase;margin-bottom:3px;
+}
+.pc-person{
+  font-family:'Playfair Display',serif;font-size:17px;
+  font-weight:600;color:var(--ivory);margin-bottom:6px;
+}
+.pc-desc{font-size:13px;color:var(--brand-pale);line-height:1.6;}
+
+/* pawns in two columns */
+.pawns-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:8px;margin:16px 0;
+}
+.pawn-card{
+  background:var(--brand);
+  border:.5px solid rgba(201,149,74,.28);
+  padding:14px 12px;text-align:center;
+}
+.pawn-card.alt{background:#1a2e1c;}
+.pawn-icon{font-size:20px;margin-bottom:5px;}
+.pawn-name{
+  font-family:'Playfair Display',serif;font-size:13.5px;
+  color:var(--ivory);font-weight:600;margin-bottom:3px;
+}
+.pawn-virtue{font-size:11.5px;color:var(--ivory);font-style:italic;line-height:1.45;opacity:.82;}
+
+/* life note */
+.life-note{
+  background:rgba(42,107,58,.12);
+  border-left:3px solid var(--gold-light);
+  padding:18px 22px;margin:22px 0;
+}
+.life-note p{color:var(--brand-cream);font-size:15.5px;line-height:1.72;margin:0;}
+
+/* ─── SECTION SEPARATOR ─── */
+.sec-sep{
+  height:3px;
+  background:linear-gradient(90deg,transparent,var(--gold),var(--gold-light),var(--gold),transparent);
+}
+
+/* ─── FINAL WORD ─── */
+.final-word{
+  background:var(--brand-deep);
+  padding:90px 52px;text-align:center;
+  position:relative;overflow:hidden;
+}
+.final-word::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at center,rgba(201,149,74,.07) 0%,transparent 70%);
+  pointer-events:none;
+}
+.final-word::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,transparent,var(--gold),var(--gold-light),var(--gold),transparent);
+}
+.final-word-inner{position:relative;max-width:540px;margin:0 auto;}
+.final-word h2{
+  font-family:'Playfair Display',serif;font-size:40px;
+  font-style:italic;color:var(--ivory);margin-bottom:28px;
+}
+.final-word p{
+  font-family:'Crimson Pro',serif;font-size:18px;
+  color:var(--brand-pale);line-height:1.9;margin-bottom:18px;
+}
+.ornament{
+  text-align:center;margin:36px 0;
+  color:var(--gold);font-size:16px;opacity:.4;letter-spacing:16px;
+}
+.final-sig{
+  margin-top:48px;font-family:'Space Mono',monospace;
+  font-size:9px;letter-spacing:.18em;
+  color:var(--gold-light);opacity:.55;text-transform:uppercase;line-height:2.4;
+}
+
+/* ─── PAGE NUMBERS ─── */
+/* Injected by JS after each logical page section */
+.pn{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:8px 48px 12px;
+  min-height:34px;
+  pointer-events:none;
+  user-select:none;
+}
+/* Roman numerals — front matter, bottom-left, faint embossed */
+.pn-num{
+  font-family:'Playfair Display',serif;
+  font-size:11px;
+  font-style:italic;
+  letter-spacing:.14em;
+  /* embossed: light highlight above, faint shadow below */
+  text-shadow:
+    0 1px 0 rgba(255,255,255,.85),
+    0 -1px 0 rgba(0,0,0,.07),
+    1px 0 0 rgba(255,255,255,.4),
+    -1px 0 0 rgba(0,0,0,.04);
+}
+/* light-background sections */
+.pn-light .pn-num{
+  color:var(--text-muted);
+  opacity:.22;
+}
+/* dark-background sections (part dividers, life, toc) */
+.pn-dark .pn-num{
+  color:var(--brand-pale);
+  opacity:.2;
+  text-shadow:
+    0 1px 0 rgba(255,255,255,.04),
+    0 -1px 0 rgba(0,0,0,.35),
+    1px 0 0 rgba(255,255,255,.02),
+    -1px 0 0 rgba(0,0,0,.2);
+}
+/* spacer so number sits left */
+.pn-spacer{ flex:1; }
+
+/* ─── PRINT / PDF MEDIA ─── */
+@media print{
+  @page{ size: A4 portrait; margin: 18mm 20mm 22mm 20mm; }
+
+  html, body{ background: white !important; }
+  .page{ box-shadow:none !important; max-width:none !important; margin:0 !important; }
+
+  /* ── PAGE BREAKS: only before, never double-break ── */
+  /* Cover is page 1 — no break needed */
+  .dedication        { page-break-before: always; }
+  .toc-page          { page-break-before: always; }
+  .culture           { page-break-before: always; }
+  .part-divider      { page-break-before: always; }
+  .chapter           { page-break-before: always; }
+  .life-intro-section{ page-break-before: always; }
+  .life-chapter      { page-break-before: always; }
+  .final-word        { page-break-before: always; }
+
+  /* Running heads stay glued to their chapter — no break */
+  .running-head{ page-break-after: avoid; break-after: avoid; }
+
+  /* Separators: absorb into surrounding flow, never alone */
+  .sec-sep{ display:none; }
+
+  /* ── KEEP TOGETHER — never split mid-element ── */
+  .callout, .how-to, .ptable,
+  .tl-item, .s-card, .master-card,
+  .piece-card, .pawn-card, .culture-fact,
+  .board-wrap, .side-head,
+  h2, h3, h4{
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  h2, h3, h4{ page-break-after: avoid; break-after: avoid; }
+  thead{ display: table-header-group; }
+  tr{ page-break-inside: avoid; break-inside: avoid; }
+
+  /* ── ORPHAN/WIDOW CONTROL ── */
+  p{ orphans: 3; widows: 3; }
+
+  /* ── DROP CAP: remove float ── */
+  .chapter > p:first-of-type::first-letter,
+  .dropcap::first-letter{
+    float: none !important;
+    font-size: 1.4em !important;
+    font-weight: 700;
+    color: var(--gold);
+  }
+
+  /* Hide CSS watermark pseudo-element */
+  .chapter::after{ display:none; }
+}
+
+/* ─── NARROW SCREENS ─── */
+@media(max-width:720px){
+  :root{--page-w:100%;}
+  .page{box-shadow:none;}
+  .cover,.dedication,.toc-page,.culture,.part-divider,
+  .chapter,.life-intro-section,.life-chapter,.final-word{
+    padding-left:24px;padding-right:24px;
+  }
+  .running-head{padding:12px 24px;}
+  .part-ornament{display:none;}
+  .pawns-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ══════════ COVER ══════════ -->
+<section class="cover" id="cover">
+  <div class="cover-pattern"></div>
+  <div class="cover-inner">
+    <p class="cover-kicker">A Compendium of the Timeless Games of Humankind</p>
+    <h1 class="cover-title">The <em>Timeless</em><br>Board</h1>
+    <p class="cover-subtitle">A journey through Chess, Bao, and Ajua —<br>from ancient courts to the hearths of the Iteso people</p>
+    <div class="cover-line"></div>
+
+    <!-- decorative faded chess board -->
+    <div class="cover-board-wrap" id="coverBoard"></div>
+
+    <div class="cover-meta">
+      Written in the spirit of the Iteso people · East Africa · Uganda · Kenya<br>
+      Dedicated to our dear father, H.E.<br>
+      by your children: Lidong'a, Osier &amp; Ilejje
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ DEDICATION ══════════ -->
+<section class="dedication" id="dedication">
+  <div class="dedication-inner">
+    <p class="ded-label">A Gift</p>
+    <p class="ded-for">For</p>
+    <h2>H.E.</h2>
+    <div class="ded-line"></div>
+    <p class="ded-body">
+      Three games. One board. A lifetime of moves made in your shadow, and in your light.
+      This book is the record of what you taught us — that how you play says who you are.
+    </p>
+    <p class="ded-body" style="font-size:15.5px;opacity:.75;">
+      <em>"Aibokin ijo aipara ka ateker."</em><br>
+      The one who knows the old ways is never lost.
+    </p>
+    <p class="ded-sig">
+      From Lidong'a, Osier &amp; Ilejje<br>
+      ——<br>
+      Written in the spirit of the Iteso people
+    </p>
+  </div>
+</section>
+
+<!-- ══════════ TABLE OF CONTENTS ══════════ -->
+<section class="toc-page" id="toc">
+  <p class="toc-kicker">Contents</p>
+
+  <div class="toc-part">
+    <div class="toc-part-title">I · Chess — The Game of Kings</div>
+    <div class="toc-entry"><span class="toc-entry-title">Origins in India — Chaturanga</span><span class="toc-entry-dots"></span><span class="toc-entry-num">Ch. 1</span></div>
+    <div class="toc-entry"><span class="toc-entry-title">Persia and the Islamic Golden Age</span><span class="toc-entry-dots"></span><span class="toc-entry-num">Ch. 2</span></div>
+    <div class="toc-entry"><span class="toc-entry-title">Chess Enters Europe</span><span class="toc-entry-dots"></span><span class="toc-entry-num">Ch. 3</span></div>
+    <div class="toc-entry"><span class="toc-entry-title">The Mad Queen Revolution</span><span class="toc-entry-dots"></span><span class="toc-entry-num">Ch. 4</span></div>
+    <div class="toc-entry"><span class="toc-entry-title">Standardisation</span><span class="toc-entry-dots"></span><span class="toc-entry-num">Ch. 5</span></div>
+    <div class="toc-entry"><span class="toc-entry-title">The Modern Era — Champions &amp; Computers</span><span class="toc-entry-dots"></span><span class="toc-entry-num">Ch. 6</span></div>
+    <div class="toc-entry"><span class="toc-entry-title">How to Play Chess</span><span class="toc-entry-dots"></span><span class="toc-entry-num">Ch. 7</span></div>
+  </div>
+
+  <div class="toc-part">
+    <div class="toc-part-title">II · Bao — The Grand Sowing Game</div>
+    <div class="toc-entry"><span class="toc-entry-title">The Ancient Roots — Mancala</span><span class="toc-entry-dots"></span><span class="toc-entry-num">Ch. 8</span></div>
+    <div class="toc-entry"><span class="toc-entry-title">The Birth of Bao in Swahili Culture</span><span class="toc-entry-dots"></span><span class="toc-entry-num">Ch. 9</span></div>
+    <div class="toc-entry"><span class="toc-entry-title">First Written Evidence — Muyaka bin Haji</span><span class="toc-entry-dots"></span><span class="toc-entry-num">Ch. 10</span></div>
+    <div class="toc-entry"><span class="toc-entry-title">Regional Varieties and Modern Bao</span><span class="toc-entry-dots"></span><span class="toc-entry-num">Ch. 11</span></div>
+    <div class="toc-entry"><span class="toc-entry-title">How to Play Bao</span><span class="toc-entry-dots"></span><span class="toc-entry-num">Ch. 12</span></div>
+  </div>
+
+  <div class="toc-part">
+    <div class="toc-part-title">III · Ajua — The Luo Game of Seeds</div>
+    <div class="toc-entry"><span class="toc-entry-title">Ajua — Origins and Stakes</span><span class="toc-entry-dots"></span><span class="toc-entry-num">Ch. 13</span></div>
+    <div class="toc-entry"><span class="toc-entry-title">Early Records and Cultural Role</span><span class="toc-entry-dots"></span><span class="toc-entry-num">Ch. 14</span></div>
+    <div class="toc-entry"><span class="toc-entry-title">How to Play Ajua</span><span class="toc-entry-dots"></span><span class="toc-entry-num">Ch. 15</span></div>
+  </div>
+
+  <div class="toc-part">
+    <div class="toc-part-title">IV · The Game of Life</div>
+    <div class="toc-entry"><span class="toc-entry-title">Preamble</span><span class="toc-entry-dots"></span><span class="toc-entry-num">Ch. 16</span></div>
+    <div class="toc-entry"><span class="toc-entry-title">The Black Pieces — Henry's World</span><span class="toc-entry-dots"></span><span class="toc-entry-num">Ch. 17</span></div>
+    <div class="toc-entry"><span class="toc-entry-title">The White Pieces — Virtues &amp; Traits</span><span class="toc-entry-dots"></span><span class="toc-entry-num">Ch. 18</span></div>
+    <div class="toc-entry"><span class="toc-entry-title">A Final Word</span><span class="toc-entry-dots"></span><span class="toc-entry-num">Ch. 19</span></div>
+  </div>
+</section>
+
+<!-- ══════════ ITESO CULTURAL LENS ══════════ -->
+<div class="running-head"><span class="rh-title">The Timeless Board</span><span class="rh-rule"></span><span class="rh-part">Through Iteso Eyes</span></div>
+<section class="culture" id="culture">
+  <h2>Through Iteso Eyes</h2>
+  <p>Before we walk through the histories of these three great games, we pause — as the Iteso elder pauses before speaking — to ground ourselves in the world from which this book is told. The Iteso, a Nilotic people straddling eastern Uganda and western Kenya, have been keepers of profound traditions of strategy, community, and wisdom for centuries. Their perspective infuses this entire volume.</p>
+  <p>The Iteso organise themselves through a clan system — originally nine clans, from which all later clans are said to have broken off. Each clan bears its own identity and role. The <em>Ikaribwok</em> (also known as Ikaruok) were the battle-hardened warriors and fighters — the largest clan, whose name literally means "those who make sounds of victory after winning a battle." The <em>Inomu</em> were the medical clan — healers and bone-setters whose expertise in medicine determined whether warriors lived or died. The <em>Igoria</em>, named after the humble hooded finch bird, were architects and builders. The <em>Irarak</em> were the hunters and gatherers who fed the people.</p>
+  <p>Each clan had a head called the <em>Apolon ka Ateker</em>, elected at a ceremony known as <em>Airukorin</em>. The person chosen was always of three qualities: bravery, neutrality, and intelligence — the same qualities required of any great chess player. His inauguration involved the ceremonial opening of a road that had been deliberately blocked for two weeks — a powerful symbol: leadership is the clearing of the way.</p>
+
+  <div class="culture-facts">
+    <div class="culture-fact">
+      <h4>Akogo — The Thumb Piano</h4>
+      <p>The akogo, crafted from bamboo tubes of varying lengths, is the defining instrument of the Iteso — played with thumbs and forefingers. It sets the rhythm for the Akogo dance, performed at weddings, funerals, births of twins, and celebrations. Like a chess clock, it marks the pace of life's most important moments.</p>
+    </div>
+    <div class="culture-fact">
+      <h4>Ekiria Kiria</h4>
+      <p>Among the most celebrated Iteso traditional dances. Performers move in circular formation, each taking their turn at the centre. This democratic rotation mirrors the philosophy of Bao and Ajua: every player — and every pawn — has their moment.</p>
+    </div>
+    <div class="culture-fact">
+      <h4>The Emorimor</h4>
+      <p>In 1995, the Iteso people of Uganda installed their first king in modern memory — the <em>Emorimor</em>. His authority rests not on force alone but on the trust and cultural standing of his people. In the personalised chess set later in this book, the King piece represents exactly this.</p>
+    </div>
+    <div class="culture-fact">
+      <h4>Traditional Dress</h4>
+      <p>During ceremonies, Iteso men wear colourful <em>shukas</em> and headdresses of animal skins and feathers. Women traditionally wore <em>barkcloth</em>, while young girls wore the <em>itibire</em> — beaded garments decorated with <em>arobai</em> — intricate patterns in which every bead placement carries meaning.</p>
+    </div>
+    <div class="culture-fact">
+      <h4>Cattle &amp; Wealth</h4>
+      <p>Among the Iteso, wealth was measured in cattle, land, and food. Bridewealth was negotiated with sticks representing cows; the number agreed before the cattle were brought. This tangible, relational economy directly connects to Ajua, where the original stakes were precisely this: cattle, goats, and standing in the community.</p>
+    </div>
+    <div class="culture-fact">
+      <h4>The Ipara</h4>
+      <p>The spirits of the dead — the <em>Ipara</em> — do not merely watch from a distance. They are believed to inhabit and influence the living. Special dances, accompanied by rattles and the <em>emudiri</em> drum, were held to invoke ancestors for consultation. Every elder who once taught Ajua is, in this sense, an Ipara — a presence that moves pieces long after they have left the board.</p>
+    </div>
+  </div>
+
+  <div class="iteso-proverb">
+    <span class="ateso">"Aibokin ijo aipara ka ateker."</span>
+    <span class="translation">An Iteso saying: <em>"The one who knows the old ways is never lost."</em> — This book is an act of knowing.</span>
+  </div>
+</section>
+
+<div class="sec-sep"></div>
+
+<!-- ══════════════════════════════════════
+     PART I — CHESS
+══════════════════════════════════════ -->
+<section class="part-divider chess" id="chess">
+  <div class="part-num-label">Part One</div>
+  <h1 class="part-title">Chess</h1>
+  <p class="part-subtitle">The Game of Kings — from India to the digital age</p>
+  <div class="part-ornament">♛</div>
+</section>
+
+<!-- Chapter 1 -->
+<div class="running-head"><span class="rh-title">The Timeless Board</span><span class="rh-rule"></span><span class="rh-part">Part I · Chess</span></div>
+<article class="chapter" id="ch1">
+  <div class="chapter-label"><span class="ch-big">C</span><span class="ch-rest">hapter</span><span class="ch-num">· One</span></div>
+  <h2>Origins in India — Chaturanga</h2>
+  <span class="ch-date">Before 600 AD</span>
+  <p>Every great thing begins with a story. The Iteso say that the ancestors of their people came from Abyssinia — from the high plateaus of Ethiopia, moving south through Karamoja before settling their vast homeland. Chess has its own origin story, equally ancient and equally filled with migration and transformation.</p>
+  <p>The earliest known ancestor of chess was born in northern India during the Gupta Empire. It was called <em>Chaturanga</em> — Sanskrit for "four limbs" of an army: infantry, cavalry, elephants, and chariots. The board on which it was played — the ashtapada, an 8×8 grid — was already ancient, originally used for racing games.</p>
+
+  <div class="callout">
+    <p class="callout-label">Iteso Parallel</p>
+    <h4>The Clan as Army</h4>
+    <p>The Iteso originally organised their society into nine clans, each with a distinct role — healers (Inomu), warriors (Ikaribwok), builders (Igoria), hunters (Irarak) — every group serving the whole in a specialised capacity. Chaturanga's four divisions of an army mirror this exactly: each piece type a different function, each essential to the survival of the whole.</p>
+  </div>
+
+  <table class="ptable">
+    <thead><tr><th>Piece</th><th>Original Name</th><th>Movement</th><th>Modern Equivalent</th></tr></thead>
+    <tbody>
+      <tr><td><div class="pcell"><span class="psym">♚</span><span class="pname">Raja</span></div></td><td>Raja (King)</td><td>One square any direction</td><td>King</td></tr>
+      <tr><td><div class="pcell"><span class="psym">♛</span><span class="pname">Mantri</span></div></td><td>Mantri (Minister)</td><td>One square diagonally</td><td>Queen (weak form)</td></tr>
+      <tr><td><div class="pcell"><span class="psym">♝</span><span class="pname">Gaja</span></div></td><td>Gaja (Elephant)</td><td>Two squares diagonally, jumping</td><td>Bishop</td></tr>
+      <tr><td><div class="pcell"><span class="psym">♞</span><span class="pname">Ashva</span></div></td><td>Ashva (Horse)</td><td>L-shape — identical to today's Knight</td><td>Knight</td></tr>
+      <tr><td><div class="pcell"><span class="psym">♜</span><span class="pname">Ratha</span></div></td><td>Ratha (Chariot)</td><td>Any squares orthogonally</td><td>Rook</td></tr>
+      <tr><td><div class="pcell"><span class="psym">♟</span><span class="pname">Padati</span></div></td><td>Padati (Foot soldier)</td><td>Forward one; captures diagonally</td><td>Pawn</td></tr>
+    </tbody>
+  </table>
+  <p>The earliest clear written reference to Chaturanga comes from the Persian text <em>Chatrang-namak</em> (around 600 AD), which describes how an Indian king sent the game to the Persian court as a diplomatic gift — a move of intellectual statecraft that the Iteso Apolon ka Ateker, with his emphasis on wisdom and neutrality, would have applauded.</p>
+</article>
+
+<!-- Chapter 2 -->
+<article class="chapter" id="ch2">
+  <div class="chapter-label"><span class="ch-big">C</span><span class="ch-rest">hapter</span><span class="ch-num">· Two</span></div>
+  <h2>Persia and the Islamic Golden Age</h2>
+  <span class="ch-date">600 – 800 AD</span>
+  <p>When Chaturanga arrived in Persia, it shed its Sanskrit skin and became <em>Chatrang</em>, then — after the Islamic conquest of Persia in the seventh century — <em>Shatranj</em>. Islamic scholars embraced it as a tool for logical thinking and military strategy. The pieces were rendered as abstract shapes, following Islamic aniconism. The Elephant became <em>pil</em>; the Chariot became <em>rukh</em>, from the mythical Roc bird; the Queen (<em>firzan</em>, the counsellor) moved only one square diagonally — slow and deliberate, like an elder advising a chief.</p>
+
+  <div class="callout">
+    <p class="callout-label">The First Master</p>
+    <h4>As-Suli — A Name Worth Knowing</h4>
+    <p>Abu Bakr Muhammad bin Yahya al-Suli (9th century AD) was perhaps the first genius of chess. His manuals on endgame positions and tactical combinations were so advanced that players would say of a difficult position: "Only As-Suli could solve this." He is the game's first known theorist — the equivalent of the Apolon ka Ateker who not only governed but codified the law.</p>
+  </div>
+
+  <p>Islamic scholars also developed the <em>mansubat</em> — elaborate chess puzzle positions that became a high art form — and the first recorded blindfold chess game was played in the Islamic world, a feat of spatial memory that still astonishes today.</p>
+</article>
+
+<!-- Chapter 3 -->
+<article class="chapter" id="ch3">
+  <div class="chapter-label"><span class="ch-big">C</span><span class="ch-rest">hapter</span><span class="ch-num">· Three</span></div>
+  <h2>Chess Enters Europe</h2>
+  <span class="ch-date">9th – 14th Century</span>
+  <p>Chess travelled to Europe along two great highways of civilisation. The first was the Moorish conquest of Spain in 711 AD. The second was the Silk Road and Mediterranean trade routes, which brought it to Italy and Byzantium. By the 11th century, chess was played from the libraries of Córdoba to the cold halls of Norse Scandinavia.</p>
+  <p>Europeans gave the pieces figurative shapes: kings with crowns, bishops with mitres, rooks as castle towers. Two critical new rules emerged in this period to speed up the opening of the game.</p>
+
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-year">13th Century</div><div class="tl-text">The <strong>pawn double-step</strong> — a pawn on its starting square may advance two squares on its first move, accelerating the opening contest for the centre.</div></div>
+    <div class="tl-item"><div class="tl-year">Late 13th – 14th Century</div><div class="tl-text"><strong>En passant</strong> is introduced as a counter to the double-step — a capturing rule unlike any other in chess, preserving tactical fairness.</div></div>
+    <div class="tl-item"><div class="tl-year">~1000 AD</div><div class="tl-text">The famous <strong>Lewis Chessmen</strong> — 93 pieces carved from walrus ivory in the Norse or Scottish isles — are among the most beautiful surviving medieval chess sets in the world.</div></div>
+  </div>
+</article>
+
+<!-- Chapter 4 -->
+<article class="chapter" id="ch4">
+  <div class="chapter-label"><span class="ch-big">C</span><span class="ch-rest">hapter</span><span class="ch-num">· Four</span></div>
+  <h2>The "Mad Queen" Revolution</h2>
+  <span class="ch-date">Late 15th Century</span>
+  <p>Around 1475–1500, in Spain or Italy, something extraordinary happened. The two slowest pieces on the board — the Queen and the Bishop — received devastating new powers. The Queen could now move any number of squares in any direction. The Bishop could slide the full diagonal length of the board. Chess would never be the same.</p>
+  <p>The game was called <em>scacchi alla rabiosa</em> — "mad chess" — or <em>alla regina</em>, "queen's chess." The Iteso might have recognised it as a game that now rewarded those qualities their Apolon ka Ateker was chosen for: bold intelligence, the ability to move swiftly across the full terrain of the community's affairs, and the wisdom to use that power without squandering it.</p>
+
+  <div class="callout">
+    <p class="callout-label">1497 Milestone</p>
+    <h4>The First Printed Chess Book</h4>
+    <p>In 1497, the Spanish priest Luis Ramírez de Lucena published <em>Repetición de Amores y Arte de Ajedrez</em> — the earliest known printed chess manual under the new rules. It contained the first recorded opening lines. In Iteso terms, the Airukorin ceremony had been held, the Apolon ka Ateker had spoken, and the rules were henceforth for all clans to follow.</p>
+  </div>
+</article>
+
+<!-- Chapter 5 -->
+<article class="chapter" id="ch5">
+  <div class="chapter-label"><span class="ch-big">C</span><span class="ch-rest">hapter</span><span class="ch-num">· Five</span></div>
+  <h2>Standardisation</h2>
+  <span class="ch-date">16th – 19th Century</span>
+  <p>Two final rules completed chess's modern form. <strong>Castling</strong> — evolved from a medieval "king's leap" into the refined two-square manoeuvre — was formalised in Italy around 1600. <strong>Stalemate</strong> was universally defined as a draw: the side that cannot move without entering check is not the loser but draws. Powerlessness, in chess, earns half a point — a philosophical curiosity that has fascinated players ever since.</p>
+  <p>Howard Staunton (1810–1874), the great English champion, organised the first international tournament in London in 1851 and designed the standardised chess pieces that bear his name — the <strong>Staunton pattern</strong> — still used in all official play worldwide today.</p>
+</article>
+
+<!-- Chapter 6 -->
+<article class="chapter" id="ch6">
+  <div class="chapter-label"><span class="ch-big">C</span><span class="ch-rest">hapter</span><span class="ch-num">· Six</span></div>
+  <h2>The Modern Era — Champions and Computers</h2>
+  <span class="ch-date">1886 – Present</span>
+
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-year">1886</div><div class="tl-text">Wilhelm Steinitz defeats Johannes Zukertort to become the first official World Chess Champion, and fathers modern positional play — the idea that small advantages accumulate into decisive wins.</div></div>
+    <div class="tl-item"><div class="tl-year">1921 – 1927</div><div class="tl-text">José Raúl Capablanca of Cuba — perhaps the most naturally gifted player of all time — holds the world title, before losing it to the fierce Alexander Alekhine in one of the great upsets of chess history.</div></div>
+    <div class="tl-item"><div class="tl-year">1945 – 1990s</div><div class="tl-text">The Soviet Union dominates chess, producing champions of extraordinary depth: Botvinnik, Tal (the "Magician from Riga"), Petrosian, Spassky, Karpov, and Kasparov.</div></div>
+    <div class="tl-item"><div class="tl-year">1972</div><div class="tl-text">Bobby Fischer of the USA defeats Boris Spassky in Reykjavik, Iceland — the "Match of the Century," watched by millions at the height of the Cold War.</div></div>
+    <div class="tl-item"><div class="tl-year">1997</div><div class="tl-text">IBM's Deep Blue defeats Garry Kasparov in a six-game match — the first time a machine defeats a reigning world champion under tournament conditions. A watershed for artificial intelligence.</div></div>
+    <div class="tl-item"><div class="tl-year">2024</div><div class="tl-text"><strong>Dommaraju Gukesh</strong> of India — born in 2006 — becomes the youngest World Chess Champion in history, defeating Ding Liren of China. A new era begins.</div></div>
+  </div>
+
+  <p>Today, AI engines like Stockfish, AlphaZero, and Leela Chess Zero play far beyond human level — yet millions play chess daily on Chess.com and Lichess, drawn by the same thing that drew an Indian king to send a board to the Persian court fifteen centuries ago: the pure pleasure of contest.</p>
+</article>
+
+<!-- Chapter 7: How to Play -->
+<article class="chapter" id="ch7">
+  <div class="chapter-label"><span class="ch-big">C</span><span class="ch-rest">hapter</span><span class="ch-num">· Seven</span></div>
+  <h2>How to Play Chess</h2>
+
+  <!-- Chess board visual -->
+  <div class="board-wrap">
+    <p class="board-caption">The Starting Position</p>
+    <div class="chess-board" id="mainBoard"></div>
+  </div>
+
+  <p class="no-dropcap">Chess is played on an 8×8 board of 64 squares, alternating light and dark. Two players — one commanding the light pieces, one the dark — alternate moves. The aim is to trap the opponent's King in a position from which it cannot escape: <strong>checkmate</strong>.</p>
+
+  <div class="how-to">
+    <h3>Setting Up the Board</h3>
+    <div class="steps">
+      <div class="step"><div class="step-n"></div><div class="step-text">Place the board so each player has a light square at their near-right corner ("light on right").</div></div>
+      <div class="step"><div class="step-n"></div><div class="step-text">In each player's back rank: Rooks in the corners, Knights beside them, Bishops beside the Knights, then Queen on her own colour, King on the remaining central square.</div></div>
+      <div class="step"><div class="step-n"></div><div class="step-text">Fill the entire second rank with Pawns — eight per side.</div></div>
+      <div class="step"><div class="step-n"></div><div class="step-text">White always moves first. Players alternate turns thereafter.</div></div>
+    </div>
+  </div>
+
+  <h3>How Each Piece Moves</h3>
+  <table class="ptable">
+    <thead><tr><th>Piece</th><th>Movement</th><th>Special Rule</th></tr></thead>
+    <tbody>
+      <tr><td><div class="pcell"><span class="psym">♚</span><span class="pname">King</span></div></td><td>One square in any direction</td><td>Can castle once per game</td></tr>
+      <tr><td><div class="pcell"><span class="psym">♛</span><span class="pname">Queen</span></div></td><td>Any number of squares in any direction</td><td>Most powerful piece</td></tr>
+      <tr><td><div class="pcell"><span class="psym">♜</span><span class="pname">Rook</span></div></td><td>Any number of squares horizontally or vertically</td><td>Participates in castling</td></tr>
+      <tr><td><div class="pcell"><span class="psym">♝</span><span class="pname">Bishop</span></div></td><td>Any number of squares diagonally</td><td>Always stays on its starting colour</td></tr>
+      <tr><td><div class="pcell"><span class="psym">♞</span><span class="pname">Knight</span></div></td><td>L-shape: two squares one way, one square perpendicular</td><td>Only piece that jumps over others</td></tr>
+      <tr><td><div class="pcell"><span class="psym">♟</span><span class="pname">Pawn</span></div></td><td>Forward one square (or two on first move); captures diagonally</td><td>En passant; promotes on reaching the 8th rank</td></tr>
+    </tbody>
+  </table>
+
+  <div class="how-to" style="margin-top:28px;">
+    <h3>Key Rules</h3>
+    <div class="steps">
+      <div class="step"><div class="step-n"></div><div class="step-text"><strong>Check:</strong> When the King is directly threatened, the player in check must immediately resolve it — by moving the King, blocking, or capturing the attacking piece.</div></div>
+      <div class="step"><div class="step-n"></div><div class="step-text"><strong>Checkmate:</strong> When the King is in check and has no legal escape — the checkmated player loses.</div></div>
+      <div class="step"><div class="step-n"></div><div class="step-text"><strong>Castling:</strong> The King slides two squares toward a Rook; that Rook jumps to the other side. Neither may have moved; the King may not castle through or into check.</div></div>
+      <div class="step"><div class="step-n"></div><div class="step-text"><strong>Promotion:</strong> A Pawn reaching the opponent's back rank is immediately promoted to any piece — almost always a Queen.</div></div>
+      <div class="step"><div class="step-n"></div><div class="step-text"><strong>Stalemate:</strong> If a player has no legal moves but is not in check, the game is a draw. Powerlessness without danger is not defeat — it is standstill.</div></div>
+    </div>
+  </div>
+
+  <div class="s-label"><span class="sl-big">S</span><span class="sl-rest">trategies</span></div>
+  <div class="s-cards">
+    <div class="s-card"><h4>Control the Centre</h4><p>The four central squares (e4, d4, e5, d5) are the heart of the board. A piece in the centre controls more squares and operates with greater power. Fight for the centre with pawns and minor pieces in the opening.</p></div>
+    <div class="s-card"><h4>Develop Your Pieces</h4><p>In the opening, every move should bring a new piece into the game — Knights and Bishops before repeated Queen moves. An undeveloped army is a sleeping army.</p></div>
+    <div class="s-card"><h4>Protect Your King</h4><p>Castle early. Bring your King to safety behind a wall of pawns. An exposed King in the centre is a constant liability that your opponent will exploit throughout the entire game.</p></div>
+    <div class="s-card"><h4>Piece Activity</h4><p>A Bishop blocked by its own pawns is worth far less than a Knight posted on an outpost deep in enemy territory. Evaluate not just material count but the activity and coordination of every piece.</p></div>
+    <div class="s-card"><h4>Pawn Structure</h4><p>Doubled pawns, isolated pawns, and passed pawns shape the long-term character of any position. A sound pawn structure in the endgame often decides the result when all the pieces are gone.</p></div>
+    <div class="s-card"><h4>The Endgame</h4><p>Most beginners neglect endgame technique. A King becomes powerful here — centralise it. Rook endgames and the ability to convert a slight material advantage separate the good from the great.</p></div>
+  </div>
+
+  <div class="s-label"><span class="sl-big">T</span><span class="sl-rest">he Great Champions</span></div>
+  <div class="masters">
+    <div class="master-card"><span class="master-card-icon">♟</span><div><div class="era">9th Century AD</div><div class="mname">As-Suli</div><div class="mdesc">The Arab master whose endgame studies remained unsurpassed for a thousand years. The first chess theorist.</div></div></div>
+    <div class="master-card"><span class="master-card-icon">♟</span><div><div class="era">1886 – 1894</div><div class="mname">Wilhelm Steinitz</div><div class="mdesc">First official World Champion. Founder of modern positional play — the science of accumulated small advantages.</div></div></div>
+    <div class="master-card"><span class="master-card-icon">♟</span><div><div class="era">1921 – 1927</div><div class="mname">José Capablanca</div><div class="mdesc">Cuban genius with almost supernatural intuition. His endgame technique remains a model of clarity and economy.</div></div></div>
+    <div class="master-card"><span class="master-card-icon">♟</span><div><div class="era">1960 – 1961</div><div class="mname">Mikhail Tal</div><div class="mdesc">The "Magician from Riga" — famous for dazzling sacrificial attacks that defied classical rules. Chess as pure art.</div></div></div>
+    <div class="master-card"><span class="master-card-icon">♟</span><div><div class="era">1985 – 2000</div><div class="mname">Garry Kasparov</div><div class="mdesc">Widely considered the greatest of all time. His preparation, intelligence, and competitive fire were unmatched.</div></div></div>
+    <div class="master-card"><span class="master-card-icon">♟</span><div><div class="era">2024 – Present</div><div class="mname">D. Gukesh</div><div class="mdesc">The youngest world champion in history at 18 — India's new standard-bearer for a new generation of chess.</div></div></div>
+  </div>
+</article>
+
+<div class="sec-sep"></div>
+
+<!-- ══════════════════════════════════════
+     PART II — BAO
+══════════════════════════════════════ -->
+<section class="part-divider bao" id="bao">
+  <div class="part-num-label">Part Two</div>
+  <h1 class="part-title">Bao</h1>
+  <p class="part-subtitle">The Grand Sowing Game of East Africa</p>
+  <div class="part-ornament">◎</div>
+</section>
+
+<!-- Chapter 8 -->
+<div class="running-head"><span class="rh-title">The Timeless Board</span><span class="rh-rule"></span><span class="rh-part">Part II · Bao</span></div>
+<article class="chapter" id="ch8">
+  <div class="chapter-label"><span class="ch-big">C</span><span class="ch-rest">hapter</span><span class="ch-num">· Eight</span></div>
+  <h2>The Ancient Roots — Mancala and the Cradle of Games</h2>
+  <p>Long before India gave us Chaturanga, Africa was already playing. The mancala family of games — whose name derives from the Arabic <em>naqala</em>, meaning "to move" — encompasses hundreds of variants played with seeds, stones, or shells in pits carved from wood or dug directly into the earth. The Iteso know well that the earth remembers everything. And the earth of East Africa has held the memory of these games for at least seven thousand years.</p>
+  <p>Archaeological evidence — pit depressions carved into ancient rock across Ethiopia, Kenya, Uganda, and Tanzania — suggests counting and sowing games as old as the earliest agricultural settlements in the region. Around 1400 BC, Egyptians carved mancala boards into the stone floors of temples at Karnak and into the pyramids at El-Lahun. These were not games for common folk — they were played in sacred spaces. Strategy was holy.</p>
+
+  <div class="callout">
+    <p class="callout-label">The Spread</p>
+    <h4>From the Nile to the Coast</h4>
+    <p>From the Nile valley, mancala spread along trade routes, across the Sahara, and down the East African coast through Bantu migrations and the Swahili trade network. Every community that received it made it their own. And nowhere was it made more magnificently complex than along the shores of the Indian Ocean.</p>
+  </div>
+</article>
+
+<!-- Chapter 9 -->
+<article class="chapter" id="ch9">
+  <div class="chapter-label"><span class="ch-big">C</span><span class="ch-rest">hapter</span><span class="ch-num">· Nine</span></div>
+  <h2>The Birth of Bao in Swahili Culture</h2>
+  <span class="ch-date">Before the 17th Century</span>
+  <p>Bao — the Swahili word for "board" — is not merely a mancala game. It is the most complex mancala game ever devised. The board: four rows of eight pits — 32 pits in total. Two players each control two rows: the front (attack) row and the back (store) row. Seeds — traditionally real seeds, stones, or shells — are the pieces. The sowing mechanic, capturing chains, and the strict rule that a capturing move must always be taken when available combine into a game of extraordinary strategic depth.</p>
+
+  <!-- Bao board visual -->
+  <div class="board-wrap" style="max-width:100%;">
+    <p class="board-caption">The Bao Board — 4 Rows × 8 Pits</p>
+    <div class="bao-board" id="baoBoard"></div>
+    <p style="text-align:center;font-size:12px;color:var(--text-muted);font-style:italic;margin-top:8px;">North player's rows (top) · South player's rows (bottom) · Front rows face inward</p>
+  </div>
+
+  <table class="ptable">
+    <thead><tr><th>Feature</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td>Board</td><td>4 rows × 8 pits = 32 pits total</td></tr>
+      <tr><td>Seeds</td><td>64 seeds total — 32 per player at the start</td></tr>
+      <tr><td>Control</td><td>Each player controls 2 rows (front attack row + back store row)</td></tr>
+      <tr><td>Capturing</td><td>Mandatory when available — you must capture if you can</td></tr>
+      <tr><td>Victory</td><td>Opponent cannot make a valid move, or has fewer than 2 seeds in their front row</td></tr>
+      <tr><td>The Nyumba</td><td>A "house" — a special pit built over several turns, granting tactical advantages and protections</td></tr>
+    </tbody>
+  </table>
+</article>
+
+<!-- Chapter 10 -->
+<article class="chapter" id="ch10">
+  <div class="chapter-label"><span class="ch-big">C</span><span class="ch-rest">hapter</span><span class="ch-num">· Ten</span></div>
+  <h2>First Written Evidence — Muyaka bin Haji</h2>
+  <span class="ch-date">Early 1800s</span>
+  <p>The earliest clear literary reference to Bao comes from the poetry of Muyaka bin Haji (1776–1840), the celebrated poet of Mombasa, Kenya. In his verses, he describes gameplay with specific Bao terminology — <em>nyumba</em> (houses), <em>kibao</em> (board), the act of "eating" seeds — confirming that a fully recognisable form of modern Bao was played on the Kenyan coast in the early 19th century. The oldest surviving physical Bao board dates to 1896, from Malawi (where the game is called Bawo), and is now housed in the British Museum.</p>
+
+  <div class="callout">
+    <p class="callout-label">An Iteso Parallel</p>
+    <h4>Poetry as Documentation</h4>
+    <p>The Iteso preserved their history through oral tradition — stories, songs, and proverbs passed from elder to grandchild by firelight. The Apolon ka Ateker was chosen in part for his memory of such oral records. Muyaka bin Haji's preservation of Bao through poetry is this same tradition at work. When the Iteso say "Aibokin ijo aipara ka ateker" — the one who knows the old ways is never lost — they mean that language and story are the most durable records we have. The game survived because a poet remembered it.</p>
+  </div>
+</article>
+
+<!-- Chapter 11 -->
+<article class="chapter" id="ch11">
+  <div class="chapter-label"><span class="ch-big">C</span><span class="ch-rest">hapter</span><span class="ch-num">· Eleven</span></div>
+  <h2>Regional Varieties and Modern Bao</h2>
+  <p>As Bao spread through East Africa, it differentiated into distinct forms, each carrying the character of its community — just as the Iteso of Uganda and Kenya share common roots but have developed different paths due to geography, history, and the communities around them.</p>
+
+  <div class="s-cards">
+    <div class="s-card"><h4>Bao la Kiswahili</h4><p>The full, grandmaster version played in Zanzibar, Dar es Salaam, and coastal Tanzania. This is the most complex — the chess of the mancala world.</p></div>
+    <div class="s-card"><h4>Bao la Kujifunza</h4><p>"Bao for learners" — a simplified form with fewer capturing rules, used to introduce children and newcomers to the game's philosophy and spirit.</p></div>
+    <div class="s-card"><h4>Bawo</h4><p>The Malawian variant — the oldest surviving physical board (1896, now in the British Museum). Minor rule differences, but the same four-row, eight-pit architecture.</p></div>
+    <div class="s-card"><h4>Omweso</h4><p>The Ugandan relative, played on a 4×8 board with different capture mechanics — beloved in Buganda and increasingly popular in regional tournaments.</p></div>
+  </div>
+
+  <p>In 1966, the <em>Chama cha Bao</em> (Bao Society) was formed in Tanzania to preserve, standardise, and promote the game. It awards the title of <em>Bingwa</em> — master — to its finest players. Today, Bao is played daily in village <em>barazas</em> (gathering places) and is recognised as an intangible cultural heritage of the Swahili people.</p>
+</article>
+
+<!-- Chapter 12: How to Play Bao -->
+<article class="chapter" id="ch12">
+  <div class="chapter-label"><span class="ch-big">C</span><span class="ch-rest">hapter</span><span class="ch-num">· Twelve</span></div>
+  <h2>How to Play Bao</h2>
+  <p class="no-dropcap">Bao is a two-player game of sowing and capturing on a 4×8 board. Each player controls the two rows nearest them. Seeds are sown by picking up all seeds from one pit and distributing them one by one into successive pits moving anti-clockwise.</p>
+
+  <div class="how-to">
+    <h3>The Basics of Bao la Kiswahili</h3>
+    <div class="steps">
+      <div class="step"><div class="step-n"></div><div class="step-text"><strong>Namua phase (Setup):</strong> Players alternate placing 2 seeds at a time onto their back row. During Namua, a player must capture if possible — and capturing continues the Namua sequence.</div></div>
+      <div class="step"><div class="step-n"></div><div class="step-text"><strong>Sowing:</strong> Pick up all seeds from any of your pits and sow them one by one into successive pits, moving anti-clockwise. The last seed sown determines what happens next.</div></div>
+      <div class="step"><div class="step-n"></div><div class="step-text"><strong>Capturing:</strong> If the last seed lands in an occupied pit in your front row that is directly opposite an occupied pit in your opponent's front row, you capture those opponent seeds and continue sowing from the capture pit.</div></div>
+      <div class="step"><div class="step-n"></div><div class="step-text"><strong>The Nyumba (house):</strong> During Namua, if a player sows 3 seeds into a pit that already has some, they may "build a house." The Nyumba has special tactical protections and serves as a renewable seed base.</div></div>
+      <div class="step"><div class="step-n"></div><div class="step-text"><strong>Winning:</strong> A player wins when their opponent has fewer than 2 seeds in their front row and cannot make a valid capture — or is completely unable to move.</div></div>
+    </div>
+  </div>
+
+  <div class="s-label"><span class="sl-big">S</span><span class="sl-rest">trategies</span></div>
+  <div class="s-cards">
+    <div class="s-card"><h4>Build Your Nyumba Early</h4><p>A well-positioned Nyumba acts as a renewable seed source. Experienced players plan their entire Namua phase around securing the best house position.</p></div>
+    <div class="s-card"><h4>Control the Inner Pits</h4><p>The inner four pits of your front row are strategic gold. Concentrate seeds there and starve your opponent's inner row simultaneously.</p></div>
+    <div class="s-card"><h4>Force Unfavourable Captures</h4><p>Since capturing is mandatory, you can force your opponent into bad captures by engineering positions where their only options lead them into a trap on your next turn.</p></div>
+    <div class="s-card"><h4>Distribute, Don't Hoard</h4><p>A player with seeds spread evenly is flexible. One with seeds hoarded in a single pit is vulnerable. Like the Iteso clan system — one powerful clan alone is more fragile than many smaller ones working in concert.</p></div>
+  </div>
+
+  <div class="s-label"><span class="sl-big">K</span><span class="sl-rest">nown Masters</span></div>
+  <div class="masters">
+    <div class="master-card"><span class="master-card-icon">◎</span><div><div class="era">1966 – Present</div><div class="mname">Chama cha Bao</div><div class="mdesc">The Tanzanian Bao Society — the organising body that awards the Bingwa (master) title and runs tournaments across the Swahili coast.</div></div></div>
+    <div class="master-card"><span class="master-card-icon">◎</span><div><div class="era">1979</div><div class="mname">Philip Townshend</div><div class="mdesc">British academic whose doctoral thesis provided the most rigorous analysis of Bao's rules and social role — the As-Suli of Bao scholarship.</div></div></div>
+    <div class="master-card"><span class="master-card-icon">◎</span><div><div class="era">Early 1800s</div><div class="mname">Muyaka bin Haji</div><div class="mdesc">Mombasa's greatest Swahili poet, who immortalised Bao in verse — ensuring the game's specific vocabulary survived in literature before any scholar documented it.</div></div></div>
+  </div>
+</article>
+
+<div class="sec-sep"></div>
+
+<!-- ══════════════════════════════════════
+     PART III — AJUA
+══════════════════════════════════════ -->
+<section class="part-divider ajua" id="ajua">
+  <div class="part-num-label">Part Three</div>
+  <h1 class="part-title">Ajua</h1>
+  <p class="part-subtitle">The Luo Game of Seeds — prestige, cattle, and the lake shore</p>
+  <div class="part-ornament">●</div>
+</section>
+
+<!-- Chapter 13 -->
+<div class="running-head"><span class="rh-title">The Timeless Board</span><span class="rh-rule"></span><span class="rh-part">Part III · Ajua</span></div>
+<article class="chapter" id="ch13">
+  <div class="chapter-label"><span class="ch-big">C</span><span class="ch-rest">hapter</span><span class="ch-num">· Thirteen</span></div>
+  <h2>Ajua — The Luo Game of Seeds</h2>
+  <p>If Bao is the grandmaster — cerebral, elaborate, ceremonial — then Ajua is the warrior: urgent, competitive, played hard and played for stakes. Ajua (also spelled Ajwaa) is the name given to mancala games by the Luo, Luhya, Samburu, and Turkana peoples of western Kenya and eastern Uganda. The name comes from the Luo language — possibly derived from the seeds traditionally used as playing pieces.</p>
+  <p>Played on a 2×8 or 2×10 board — two rows of eight or ten pits — Ajua is less complex in its capturing mechanics than Bao, but fiercer in its social context. It was, and in many places still is, a gambling game. The stakes were cattle, goats, and money. Chiefs used it to settle minor disputes instead of adjudication. Herdsmen played it while watching their herds under an open sky — the board sometimes carved directly into the earth at their feet.</p>
+
+  <div class="callout">
+    <p class="callout-label">An Iteso Connection</p>
+    <h4>Cattle and Stakes</h4>
+    <p>The Iteso, like the Luo, measured wealth in cattle. Bridewealth negotiations were conducted with sticks representing cows; the actual cattle were brought only after agreement was reached. That Ajua was played for cattle stakes is not surprising — across the Lake Victoria basin, cattle were the primary currency of prestige and social relationship. A game of Ajua was not merely entertainment. It was an economic and social event, as consequential as a market day or a council meeting.</p>
+  </div>
+</article>
+
+<!-- Chapter 14 -->
+<article class="chapter" id="ch14">
+  <div class="chapter-label"><span class="ch-big">C</span><span class="ch-rest">hapter</span><span class="ch-num">· Fourteen</span></div>
+  <h2>Early Historical Records and Cultural Role</h2>
+
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-year">1929</div><div class="tl-text">The first written description of Ajua appears in George R. Carline's travel writings on East Africa — men playing in cattle camps, pits carved directly into the ground.</div></div>
+    <div class="tl-item"><div class="tl-year">1965</div><div class="tl-text">Kenyan historian John N. B. Osogo provides the most detailed early account of Ajua among the Luo — the board (<em>kido</em>), the seeds (<em>go</em> or <em>ajua</em>), and the gambling culture surrounding competitive play.</div></div>
+    <div class="tl-item"><div class="tl-year">June 27, 1977</div><div class="tl-text">The <strong>Kenya Ajua Club</strong> is officially registered in Nairobi — the first formal organisation dedicated to Ajua as a recognised traditional sport.</div></div>
+    <div class="tl-item"><div class="tl-year">2005</div><div class="tl-text">Kenya's Sports Ministry officially recognises Ajua as a traditional sport — it may now be played in national school competitions.</div></div>
+    <div class="tl-item"><div class="tl-year">2008</div><div class="tl-text">The first Ajua tournament outside Africa is held at the Kenya American Day celebration in Jersey City, New Jersey.</div></div>
+    <div class="tl-item"><div class="tl-year">2021</div><div class="tl-text">Nairobi-based Rubik's Digital launches Ajua on their PlayOn e-sports platform — Android and iOS, with online multiplayer and ranked matches.</div></div>
+    <div class="tl-item"><div class="tl-year">2023</div><div class="tl-text">The first online Ajua tournament draws players from Kenya, Uganda, Tanzania, and the Kenyan diaspora in the USA and UK.</div></div>
+  </div>
+
+  <h3>The Question of Gender</h3>
+  <p>Ajua was traditionally a man's game — herdsmen's game, warrior's game, elder's game. Women were excluded not because of incapacity but because the game was embedded in masculine institutions: the cattle camp, the gambling circle, the elder's court of arbitration. This pattern has been relaxing in recent decades, particularly in urban areas and school competitions.</p>
+  <p>The Iteso have their own gendered cultural traditions — yet the Iteso also know that traditions evolve. Culture is not a cage. It is a living, breathing conversation between generations.</p>
+</article>
+
+<!-- Chapter 15: How to Play Ajua -->
+<article class="chapter" id="ch15">
+  <div class="chapter-label"><span class="ch-big">C</span><span class="ch-rest">hapter</span><span class="ch-num">· Fifteen</span></div>
+  <h2>How to Play Ajua</h2>
+
+  <!-- Ajua board visual -->
+  <div class="board-wrap" style="max-width:100%;">
+    <p class="board-caption">The Ajua Board — 2 Rows × 8 Pits</p>
+    <div class="ajua-board" id="ajuaBoard"></div>
+    <p style="text-align:center;font-size:12px;color:var(--text-muted);font-style:italic;margin-top:8px;">Each player controls one row · 4 seeds per pit at the start</p>
+  </div>
+
+  <p class="no-dropcap">Ajua is played on a 2×8 board — two rows of eight pits. Each player controls one row. Seeds are distributed in the pits at the start; the aim is to capture more seeds than your opponent and eventually leave them unable to move.</p>
+
+  <div class="how-to">
+    <h3>Setup and Play</h3>
+    <div class="steps">
+      <div class="step"><div class="step-n"></div><div class="step-text"><strong>Setup:</strong> Place 4 seeds in each of the 16 pits (2×8 board) — 64 seeds total. Each player controls the 8 pits in their single row.</div></div>
+      <div class="step"><div class="step-n"></div><div class="step-text"><strong>Sowing:</strong> On your turn, pick up all seeds from any of your pits and sow them one by one into successive pits, moving in either direction — you choose direction at the start of the move and maintain it.</div></div>
+      <div class="step"><div class="step-n"></div><div class="step-text"><strong>Capturing:</strong> If your last seed is dropped into a pit directly opposite an occupied pit in your opponent's row, you capture all seeds in that opposing pit. Captured seeds go to your store.</div></div>
+      <div class="step"><div class="step-n"></div><div class="step-text"><strong>Continuing:</strong> If the last seed lands in an already-occupied pit in your own row and no capture occurs, pick up all seeds in that pit (including the one just placed) and continue sowing.</div></div>
+      <div class="step"><div class="step-n"></div><div class="step-text"><strong>Ending:</strong> A player who cannot make a move (all pits empty or holding only one seed) loses. The player with more captured seeds wins if both sides still have moves remaining.</div></div>
+    </div>
+  </div>
+
+  <div class="s-label"><span class="sl-big">S</span><span class="sl-rest">trategies</span></div>
+  <div class="s-cards">
+    <div class="s-card"><h4>Directional Control</h4><p>The choice of direction for each sow is crucial. Experienced players plan two and three moves ahead, choosing directions that set up future captures while blocking immediate threats.</p></div>
+    <div class="s-card"><h4>Concentrate Your Seeds</h4><p>Rather than spreading seeds thinly, concentrate them to create large sowing chains that can sweep across the board and produce multiple captures in a single turn.</p></div>
+    <div class="s-card"><h4>Opponent Starvation</h4><p>The primary winning condition is leaving your opponent unable to move. Methodically drain their pits while maintaining your own seed supply. This requires the patience the Iteso call forbearance.</p></div>
+    <div class="s-card"><h4>Trap and Sacrifice</h4><p>Sacrifice smaller pits to draw your opponent into a position where their capturing move leads them into a larger counter-capture on your next turn — the same principle as a chess fork, played with seeds.</p></div>
+  </div>
+
+  <div class="s-label"><span class="sl-big">K</span><span class="sl-rest">nown Masters &amp; Organisers</span></div>
+  <div class="masters">
+    <div class="master-card"><span class="master-card-icon">●</span><div><div class="era">Founded 1977</div><div class="mname">Kenya Ajua Association</div><div class="mdesc">The governing body for competitive Ajua — setting rules, organising national tournaments, certifying referees, and running the ranking system since 2020.</div></div></div>
+    <div class="master-card"><span class="master-card-icon">●</span><div><div class="era">1965</div><div class="mname">John N. B. Osogo</div><div class="mdesc">Kenyan historian who produced the first serious academic documentation of Ajua among the Luo — the game's earliest true chronicler in writing.</div></div></div>
+    <div class="master-card"><span class="master-card-icon">●</span><div><div class="era">2021</div><div class="mname">Rubik's Digital</div><div class="mdesc">The Nairobi gaming studio that brought Ajua to smartphone screens worldwide — online multiplayer, ranked matches, tutorials. The game now lives in every pocket.</div></div></div>
+  </div>
+</article>
+
+<div class="sec-sep"></div>
+
+<!-- ══════════════════════════════════════
+     PART IV — THE GAME OF LIFE
+══════════════════════════════════════ -->
+<section class="part-divider life" id="life">
+  <div class="part-num-label">Part Four</div>
+  <h1 class="part-title">The Game<br>of Life</h1>
+  <p class="part-subtitle">A chess set made for H.E. — by Lidong'a, Osier &amp; Ilejje</p>
+  <div class="part-ornament" style="opacity:.035;">♔</div>
+</section>
+
+<!-- Preamble -->
+<div class="running-head" style="background:var(--brand-deep);border-color:rgba(201,149,74,.15);">
+  <span class="rh-title" style="color:rgba(196,168,130,.5);">The Timeless Board</span>
+  <span class="rh-rule" style="background:linear-gradient(90deg,transparent,rgba(201,149,74,.2),transparent);"></span>
+  <span class="rh-part">Part IV · The Game of Life</span>
+</div>
+<section class="life-intro-section" id="ch16">
+  <p>Chess is not merely a contest of kings and pawns. It is a mirror of existence. Every move is a choice, every capture a consequence, every check a test of nerve. In this board, we see our struggles, our relationships, and our aspirations.</p>
+  <blockquote>"When you sit before this board, you are not playing a game. You are walking through your own life."</blockquote>
+  <div class="life-gold-line"></div>
+  <p>We have taken the ancient game and breathed into it a new soul. The pieces are no longer abstract soldiers. They become the people you love and the virtues you strive to live by.</p>
+  <p>The <strong style="color:var(--brand-pale);">black pieces</strong> represent Henry's world — his family, his closest allies, the faces that give him ground to stand on. The <strong style="color:var(--ivory);">white pieces</strong> represent the virtues and traits that guide him — the inner compass that points toward a life well lived.</p>
+</section>
+
+<!-- Board visual in life section -->
+<div style="background:var(--brand-deep);padding:8px 52px 32px;">
+  <p style="text-align:center;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:.28em;color:var(--gold);text-transform:uppercase;margin-bottom:14px;padding-top:24px;">The Starting Position</p>
+  <div class="chess-board" id="lifeBoard" style="max-width:400px;margin:0 auto;"></div>
+  <p style="text-align:center;font-size:13px;color:var(--brand-pale);font-style:italic;margin-top:12px;">Black (top) — Henry's family and friends &nbsp;·&nbsp; White (bottom) — Virtues and traits</p>
+</div>
+
+<!-- Black Pieces Chapter -->
+<section class="life-chapter" id="ch17">
+  <div class="chapter-label"><span class="ch-big">C</span><span class="ch-rest">hapter</span><span class="ch-num">· Seventeen</span></div>
+  <h2>The Black Pieces — Henry's World</h2>
+
+  <div class="side-head">
+    <div class="side-badge blk">♟</div>
+    <div class="side-head-text">
+      <h2>Henry's World</h2>
+      <p>Friends, family, and the people who give him ground to stand on</p>
+    </div>
+  </div>
+
+  <div class="piece-cards">
+    <div class="piece-card hl">
+      <div class="pc-icon">♚</div>
+      <div><div class="pc-role">King</div><div class="pc-person">Henry</div>
+      <div class="pc-desc">The anchor. The centre of this universe. Without him, the game ends. He is the core around whom all else turns — protected at all costs, irreplaceable, and the measure by which every other piece's purpose is judged.</div></div>
+    </div>
+    <div class="piece-card hl">
+      <div class="pc-icon">♛</div>
+      <div><div class="pc-role">Queen</div><div class="pc-person">Vivian</div>
+      <div class="pc-desc">His closest ally. She moves with grace and power across the board, through any challenge. She is the partner who amplifies his strength — the most powerful force in his world — and the one who walks beside him in every direction without hesitation.</div></div>
+    </div>
+    <div class="piece-card">
+      <div class="pc-icon">♝</div>
+      <div><div class="pc-role">Bishop · Kingside</div><div class="pc-person">Chloe</div>
+      <div class="pc-desc">His baby niece. Bishops move diagonally — through the unexpected paths. Children see what adults overlook; their innocence guides from angles we forget. Chloe is the purity of heart he sees in all of humanity.</div></div>
+    </div>
+    <div class="piece-card">
+      <div class="pc-icon">♝</div>
+      <div><div class="pc-role">Bishop · Queenside</div><div class="pc-person">Anita</div>
+      <div class="pc-desc">His daughter. The two bishops together cover all squares the other cannot reach. Anita and Chloe together make certain that no part of Henry's life goes unguarded by love's most honest form.</div></div>
+    </div>
+    <div class="piece-card">
+      <div class="pc-icon">♞</div>
+      <div><div class="pc-role">Knight · Kingside</div><div class="pc-person">Nick</div>
+      <div class="pc-desc">His son. Knights leap over obstacles, turning corners, appearing where least expected. Nick would ride at dawn should the need arise — loyal, daring, and always ready when it matters most.</div></div>
+    </div>
+    <div class="piece-card">
+      <div class="pc-icon">♞</div>
+      <div><div class="pc-role">Knight · Queenside</div><div class="pc-person">Luther</div>
+      <div class="pc-desc">His son. Together, Nick and Luther are the dawn-riders — the sons who come at the first call, who leap where pawns cannot go, and who make moves nobody else on the board can make.</div></div>
+    </div>
+    <div class="piece-card">
+      <div class="pc-icon">♜</div>
+      <div><div class="pc-role">Rook · Kingside</div><div class="pc-person">M. Nyangabiyaki</div>
+      <div class="pc-desc">His old high school mate. The rook holds the flank without drama — straight lines, unwavering presence. The friend who has stood with Henry since youth, through victories and defeats, requiring nothing but the act of showing up.</div></div>
+    </div>
+    <div class="piece-card">
+      <div class="pc-icon">♜</div>
+      <div><div class="pc-role">Rook · Queenside</div><div class="pc-person">P. Nyangabiyaki</div>
+      <div class="pc-desc">His other lifelong ally from school days. The second rook, guarding the other flank of the king's world. Together, the two Nyangabiyakis are the architectural pillars without which the whole structure cannot stand.</div></div>
+    </div>
+  </div>
+
+  <h3>The Pawns — His Siblings</h3>
+  <p>Pawns are the daily presence — the backbone of the army. They move steadily, one step at a time, but they are the ones who hold the line. And when a pawn reaches the far end of the board, it becomes a queen. That is family: ordinary, steady, and capable of extraordinary transformation.</p>
+
+  <div class="pawns-grid">
+    <div class="pawn-card"><div class="pawn-icon">♟</div><div class="pawn-name">Tom</div><div class="pawn-virtue">The eldest — the first one forward, always.</div></div>
+    <div class="pawn-card alt"><div class="pawn-icon">♟</div><div class="pawn-name">Hope</div><div class="pawn-virtue">The name says everything that needs saying.</div></div>
+    <div class="pawn-card"><div class="pawn-icon">♟</div><div class="pawn-name">Martha</div><div class="pawn-virtue">Steadfast and grounded — unmoved by storms.</div></div>
+    <div class="pawn-card alt"><div class="pawn-icon">♟</div><div class="pawn-name">Beateu</div><div class="pawn-virtue">Quiet strength — the kind that outlasts noise.</div></div>
+    <div class="pawn-card"><div class="pawn-icon">♟</div><div class="pawn-name">Aloni</div><div class="pawn-virtue">Present and loyal — stands beside Luther always.</div></div>
+    <div class="pawn-card alt"><div class="pawn-icon">♟</div><div class="pawn-name">Ernest</div><div class="pawn-virtue">Dependable and true — stands beside Nick always.</div></div>
+    <div class="pawn-card"><div class="pawn-icon">♟</div><div class="pawn-name">Siobhance</div><div class="pawn-virtue">The youngest named — far in age, close in heart.</div></div>
+    <div class="pawn-card alt" style="border-color:rgba(201,149,74,.4);"><div class="pawn-icon">♟</div><div class="pawn-name">The Eighth</div><div class="pawn-virtue">Still becoming — the one they all look back for.</div></div>
+  </div>
+</section>
+
+<!-- White Pieces Chapter -->
+<section class="life-chapter" id="ch18">
+  <div class="chapter-label"><span class="ch-big">C</span><span class="ch-rest">hapter</span><span class="ch-num">· Eighteen</span></div>
+  <h2>The White Pieces — Virtues &amp; Traits</h2>
+
+  <div class="side-head">
+    <div class="side-badge wht">♙</div>
+    <div class="side-head-text">
+      <h2>Virtues &amp; Traits</h2>
+      <p>The ideals — the inner compass that points toward a life well lived</p>
+    </div>
+  </div>
+
+  <div class="piece-cards">
+    <div class="piece-card hl">
+      <div class="pc-icon">♔</div>
+      <div><div class="pc-role">King</div><div class="pc-person">Honesty / Integrity</div>
+      <div class="pc-desc">The master virtue. Without honesty, no other virtue stands. In chess, if the king falls, you lose. If you lose integrity, you lose yourself. This is the non-negotiable core — the virtue all others exist to protect.</div></div>
+    </div>
+    <div class="piece-card hl">
+      <div class="pc-icon">♕</div>
+      <div><div class="pc-role">Queen</div><div class="pc-person">Empathy &amp; Humility</div>
+      <div class="pc-desc">The most powerful piece on the board. True power is not domination — it is understanding (empathy) and the refusal to boast (humility). She moves everywhere, but she never forgets that others also move.</div></div>
+    </div>
+    <div class="piece-card">
+      <div class="pc-icon">♗</div>
+      <div><div class="pc-role">Bishop · Kingside</div><div class="pc-person">Wisdom</div>
+      <div class="pc-desc">Wisdom sees what is not straight ahead. The diagonal path — the long view, the quiet counsel from an unexpected angle. Wisdom is Chloe and Anita's purity, grown into patient adulthood.</div></div>
+    </div>
+    <div class="piece-card">
+      <div class="pc-icon">♗</div>
+      <div><div class="pc-role">Bishop · Queenside</div><div class="pc-person">Patience</div>
+      <div class="pc-desc">Patience waits for the right angle. It does not rush. In a world of speed, patience is the bishop that controls the far squares years before they are needed — as the Iteso Apolon ka Ateker held his tongue until the moment was right.</div></div>
+    </div>
+    <div class="piece-card">
+      <div class="pc-icon">♘</div>
+      <div><div class="pc-role">Knight · Kingside</div><div class="pc-person">Courage</div>
+      <div class="pc-desc">Courage leaps over fear. When the board is crowded, the knight jumps. When danger blocks the way, courage finds the unexpected route. The Ikaribwok did not wait for the path to clear — they cleared it themselves.</div></div>
+    </div>
+    <div class="piece-card">
+      <div class="pc-icon">♘</div>
+      <div><div class="pc-role">Knight · Queenside</div><div class="pc-person">Determination</div>
+      <div class="pc-desc">Determination refuses to give up. Two steps one way, one step the other — always advancing, never in a straight line, but always forward. This is the grit that finishes what courage starts.</div></div>
+    </div>
+    <div class="piece-card">
+      <div class="pc-icon">♖</div>
+      <div><div class="pc-role">Rook · Kingside</div><div class="pc-person">Loyalty</div>
+      <div class="pc-desc">Loyalty is the straight line of the rook — it does not waver, does not bend, does not seek a clever angle. It protects the king's flank without question, without complaint, without seeking credit.</div></div>
+    </div>
+    <div class="piece-card">
+      <div class="pc-icon">♖</div>
+      <div><div class="pc-role">Rook · Queenside</div><div class="pc-person">Justice</div>
+      <div class="pc-desc">Justice sees all ranks equally. From the first rank to the eighth, from pawn to queen — fairness applies to everyone. The rook's straight line is the law without favour. The Apolon ka Ateker was chosen for exactly this: impartiality.</div></div>
+    </div>
+  </div>
+
+  <h3>The White Pawns — Ten Small Virtues</h3>
+  <p>The pawns are the daily habits. They do not seem mighty — but push one to the end of the board, and it becomes a queen. Practise these small virtues every day, and they build the life that the great virtues merely describe.</p>
+
+  <div class="pawns-grid">
+    <div class="pawn-card"><div class="pawn-icon">♙</div><div class="pawn-name">Truthfulness</div><div class="pawn-virtue">Guards the King — speaks plainly and without fear.</div></div>
+    <div class="pawn-card alt"><div class="pawn-icon">♙</div><div class="pawn-name">Compassion</div><div class="pawn-virtue">Guards the Queen — feels before it speaks or acts.</div></div>
+    <div class="pawn-card"><div class="pawn-icon">♙</div><div class="pawn-name">Reflection</div><div class="pawn-virtue">Guards Wisdom — pauses before moving forward.</div></div>
+    <div class="pawn-card alt"><div class="pawn-icon">♙</div><div class="pawn-name">Forbearance</div><div class="pawn-virtue">Guards Patience — holds its ground and waits well.</div></div>
+    <div class="pawn-card"><div class="pawn-icon">♙</div><div class="pawn-name">Bravery</div><div class="pawn-virtue">Guards Courage — moves first, even into the unknown.</div></div>
+    <div class="pawn-card alt"><div class="pawn-icon">♙</div><div class="pawn-name">Perseverance</div><div class="pawn-virtue">Guards Determination — never retreats a single step.</div></div>
+    <div class="pawn-card"><div class="pawn-icon">♙</div><div class="pawn-name">Kindness</div><div class="pawn-virtue">Left flank — small daily acts, freely and quietly given.</div></div>
+    <div class="pawn-card alt"><div class="pawn-icon">♙</div><div class="pawn-name">Gratitude</div><div class="pawn-virtue">Left flank — receives each day as an unearned gift.</div></div>
+    <div class="pawn-card"><div class="pawn-icon">♙</div><div class="pawn-name">Generosity</div><div class="pawn-virtue">Right flank — gives without keeping score or record.</div></div>
+    <div class="pawn-card alt"><div class="pawn-icon">♙</div><div class="pawn-name">Hopefulness</div><div class="pawn-virtue">Right flank — always the very last pawn standing.</div></div>
+  </div>
+</section>
+
+<!-- Final Word -->
+<section class="final-word" id="ch19">
+  <div class="final-word-inner">
+    <h2>Play Well. Live Well.</h2>
+    <div class="life-gold-line" style="margin:0 auto 36px;"></div>
+    <p>This is your board now. When you move Henry, you are protecting your anchor. When you move Vivian, you honour your closest ally. When you advance Tom or Hope, you walk with your siblings. And on the other side, when you slide Honesty forward or leap with Courage, you are choosing who you want to become.</p>
+    <p>The Iteso say that the one who knows the old ways is never lost. Chess came from a king's court in ancient India. Bao grew from seeds pressed into the earth of Africa for seven thousand years. Ajua was played between herdsmen who wagered their cattle on a game of pure strategy under an open sky. All three arrived at the same truth: how you play says who you are.</p>
+    <p>The game of chess, the sowing of Bao and Ajua — they are all the same story. Strategy, patience, love, and principle. The Ikaribwok warrior who knew when to fight. The Apolon ka Ateker elected for neutrality and wisdom at the Airukorin ceremony. The Emorimor who stands in leopard-skin robes knowing that his authority comes not from force but from the trust of his people.</p>
+    <p>Every move you make on this board is a move you make in your life.</p>
+    <div class="ornament">◆ &nbsp; ◆ &nbsp; ◆</div>
+    <div class="final-sig">
+      This book was prepared for H.E.<br>
+      by Lidong'a, Osier and Ilejje<br>
+      ——<br>
+      Written in the spirit of the Iteso people<br>
+      of Eastern Uganda and Western Kenya
+    </div>
+  </div>
+</section>
+
+</div><!-- end .page -->
+
+<script>
+/* ── Cover art board ── */
+(function(){
+  var b = document.getElementById('coverBoard');
+  if(!b) return;
+  for(var r=0;r<8;r++) for(var c=0;c<8;c++){
+    var d = document.createElement('div');
+    d.style.width='100%'; d.style.height='100%';
+    d.className = (r+c)%2===0 ? 'cbc-lt' : 'cbc-dk';
+    b.appendChild(d);
+  }
+})();
+
+/* ── Chess board renderer ── */
+function renderChessBoard(id, darkPieceColor, lightPieceColor){
+  var b = document.getElementById(id);
+  if(!b) return;
+  var rows = [
+    ['♜','♞','♝','♛','♚','♝','♞','♜'],
+    ['♟','♟','♟','♟','♟','♟','♟','♟'],
+    [null,null,null,null,null,null,null,null],
+    [null,null,null,null,null,null,null,null],
+    [null,null,null,null,null,null,null,null],
+    [null,null,null,null,null,null,null,null],
+    ['♙','♙','♙','♙','♙','♙','♙','♙'],
+    ['♖','♘','♗','♕','♔','♗','♘','♖']
+  ];
+  rows.forEach(function(row, r){
+    row.forEach(function(piece, c){
+      var cell = document.createElement('div');
+      cell.className = 'cb-cell ' + ((r+c)%2===1 ? 'dk' : 'lt');
+      if(piece){
+        var p = document.createElement('span');
+        p.className = 'po';
+        p.textContent = piece;
+        p.style.color = r < 2 ? (darkPieceColor || '#2e1e10') : (lightPieceColor || '#f6f0e0');
+        p.style.textShadow = r < 2
+          ? '0 1px 2px rgba(255,255,255,.2)'
+          : '0 1px 3px rgba(46,30,16,.5)';
+        cell.appendChild(p);
+      }
+      b.appendChild(cell);
+    });
+  });
+}
+renderChessBoard('mainBoard', '#2e1e10', '#f6f0e0');
+renderChessBoard('lifeBoard', '#2e1e10', '#f6f0e0');
+
+/* ── Bao board ── */
+(function(){
+  var b = document.getElementById('baoBoard');
+  if(!b) return;
+  // 4 rows × 8 cols, rendered as a grid of pit circles
+  // Row 0 = North back store, Row 1 = North front attack
+  // Row 2 = South front attack, Row 3 = South back store
+  // Starting seeds per pit: back rows have 0, front rows have varying
+  var startSeeds = [
+    [0,0,0,0,0,0,0,0],   // North back (store)
+    [2,2,2,2,2,2,2,2],   // North front (attack)
+    [2,2,2,2,2,2,2,2],   // South front (attack)
+    [0,0,0,0,0,0,0,0]    // South back (store)
+  ];
+  var rowLabels = ['North back','North front','South front','South back'];
+  b.style.gridTemplateRows = 'repeat(4,1fr)';
+  b.style.gridTemplateColumns = 'repeat(8,1fr)';
+  b.style.gap = '4px';
+  b.style.padding = '8px';
+  b.style.background = '#3d2510';
+
+  for(var r=0;r<4;r++){
+    for(var c=0;c<8;c++){
+      var cell = document.createElement('div');
+      cell.style.cssText = [
+        'background:#1a0d06',
+        'border-radius:50%',
+        'display:flex',
+        'align-items:center',
+        'justify-content:center',
+        'aspect-ratio:1',
+        'border: 1.5px solid rgba(201,149,74,' + (r===1||r===2?'.35':'.12') + ')',
+        'box-shadow: inset 0 2px 4px rgba(0,0,0,.4)'
+      ].join(';');
+      var seeds = startSeeds[r][c];
+      if(seeds > 0){
+        var txt = document.createElement('span');
+        txt.textContent = seeds;
+        txt.style.cssText = 'font-family:Space Mono,monospace;font-size:9px;color:#e8bc72;opacity:.75;';
+        cell.appendChild(txt);
+      }
+      b.appendChild(cell);
+    }
+  }
+})();
+
+/* ── Ajua board ── */
+(function(){
+  var b = document.getElementById('ajuaBoard');
+  if(!b) return;
+  for(var r=0;r<2;r++){
+    for(var c=0;c<8;c++){
+      var pit = document.createElement('div');
+      pit.className = 'ajua-pit';
+      pit.textContent = '4';
+      b.appendChild(pit);
+    }
+  }
+})();
+
+/* ══════════════════════════════════════════
+   PAGE NUMBERING
+   Front matter (cover, dedication, toc) → Roman numerals (i, ii, iii…)
+   Body content (everything else)         → Arabic numerals (1, 2, 3…)
+   Numbers appear bottom-left, faint embossed.
+   Running-heads and sec-seps are skipped (not logical pages).
+══════════════════════════════════════════ */
+(function(){
+  function toRoman(n){
+    var vals=[1000,900,500,400,100,90,50,40,10,9,5,4,1];
+    var syms=['m','cm','d','cd','c','xc','l','xl','x','ix','v','iv','i'];
+    var out='';
+    for(var i=0;i<vals.length;i++){
+      while(n>=vals[i]){out+=syms[i];n-=vals[i];}
+    }
+    return out;
+  }
+
+  /* Define which sections get which numbering scheme.
+     Order matters — it determines the sequence numbers.       */
+  var romanSections  = ['cover','dedication','toc'];
+  var arabicSections = [
+    'culture',          /* Through Iteso Eyes */
+    'chess',            /* Part I divider */
+    'ch1','ch2','ch3','ch4','ch5','ch6','ch7',
+    'bao',              /* Part II divider */
+    'ch8','ch9','ch10','ch11','ch12',
+    'ajua',             /* Part III divider */
+    'ch13','ch14','ch15',
+    'life',             /* Part IV divider */
+    'ch16',             /* Preamble / intro */
+    'ch17','ch18',
+    'ch19'              /* Final word */
+  ];
+
+  /* Dark-background sections (number rendered light-on-dark) */
+  var darkSections = new Set([
+    'cover','dedication','toc',
+    'chess','bao','ajua','life',
+    'ch16','ch17','ch18','ch19'
+  ]);
+
+  function insertPN(id, numStr, isDark){
+    var el = document.getElementById(id);
+    if(!el) return;
+    var bar = document.createElement('div');
+    bar.className = 'pn ' + (isDark ? 'pn-dark' : 'pn-light');
+    bar.innerHTML =
+      '<span class="pn-num">' + numStr + '</span>' +
+      '<span class="pn-spacer"></span>';
+    el.appendChild(bar);
+  }
+
+  var r = 0, a = 0;
+
+  romanSections.forEach(function(id){
+    r++;
+    insertPN(id, toRoman(r), darkSections.has(id));
+  });
+
+  arabicSections.forEach(function(id){
+    a++;
+    insertPN(id, a, darkSections.has(id));
+  });
+})();
+</script>
+</body>
+</html>
